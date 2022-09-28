@@ -15,4 +15,10 @@ function getRandom(x, y) {
   return NaN;
 }
 
+function isFits(string, maxLength = 140) {
+  return typeof string === 'string' ? string.length <= maxLength : null;
+}
 
+getRandom(1.3, 1.7);
+
+isFits('foobar', 2);
