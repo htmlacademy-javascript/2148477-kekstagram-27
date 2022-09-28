@@ -5,6 +5,7 @@
 *.pdf
 *.psd
 *.sublime*
+*.gitpod*
 build/
 node_modules/
 npm-debug.log*
