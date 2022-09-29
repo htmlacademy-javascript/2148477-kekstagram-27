@@ -1,5 +1,3 @@
-'use strict';
-
 function getRandom(x, y) {
   if (Number.isFinite(x) && Number.isFinite(y) && x >= 0 && y >= 0) {
     if (x === y) {
