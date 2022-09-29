@@ -4,10 +4,13 @@
 
 tasks:
   - init: npm install -DE
-    command: npm run lint
+
   - init: sudo apt update
     command: sudo apt upgrade
+
   - before: eval "$(ssh-agent -s)"
+
   - init: ssh-add /workspace/.ssh/id_ed25519
-  - command: ssh -T git@ginhub.com
+
+  - command: ssh -T git@github.com
   
