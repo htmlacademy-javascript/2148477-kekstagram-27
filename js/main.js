@@ -21,6 +21,6 @@ function isFits(string, maxLength = 140) {
   return typeof string === 'string' ? string.length <= maxLength : null;
 }
 
-getRandom(1.3, 1.7);
+getRandomInt(1.3, 1.7);
 
 isFits('foobar', 2);
