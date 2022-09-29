@@ -7,7 +7,7 @@ function getRandom(x, y) {
     const min = Math.ceil(Math.min(x, y));
     const max = Math.floor(Math.max(x, y));
     const randomNum = Math.floor(Math.random() * (max - min + 1) + min);
-    return (randomNum > min && randomNum < max) ? randomNum : null;
+    return (randomNum >= min && randomNum <= max) ? randomNum : null;
   }
 
   return NaN;
