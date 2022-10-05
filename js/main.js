@@ -1,4 +1,10 @@
 const POSTED_PHOTOS_COUNT = 25;
+const COMMENT_PER_PHOTO_MIN = 2;
+const COMMENT_PER_PHOTO_MAX = 6;
+
+const POSTED_COMMENTS_COUNT = POSTED_PHOTOS_COUNT * COMMENT_PER_PHOTO_MAX;
+
+const LOREM_IPSUM = 'Идейные соображения высшего порядка, а также новая модель организационной деятельности позволяет выполнять важные задания по разработке позиций, занимаемых участниками в отношении поставленных задач. Идейные соображения высшего порядка, а также постоянное информационно-пропагандистское обеспечение нашей деятельности требуют от нас анализа дальнейших направлений развития. Задача организации, в особенности же начало повседневной работы по формированию позиции обеспечивает широкому кругу (специалистов) участие в формировании существенных финансовых и административных условий. Товарищи! сложившаяся структура организации представляет собой интересный эксперимент проверки модели развития. Идейные соображения высшего порядка, а также укрепление и развитие структуры позволяет выполнять важные задания по разработке форм развития.';
 
 const COMMENTORS_NAMES = [
   'Хельмут Ньютон',
@@ -52,33 +58,26 @@ getRandomInt(1.3, 1.7);
 
 isStringFits('foobar', 2);
 
-const postComment = () => ({});
+const getRandomArrayElement = (elements) => elements[getRandomInt(0, elements.length - 1)];
+
+const postComment = () => ({
+  id: getRandomInt(1, POSTED_COMMENTS_COUNT),
+  avatar: `img/avatar-${getRandomInt(1, 6)}.svg`, //сгенерировать неповторяющийся
+  message: getRandomArrayElement(COMMENTS), //сгенерировать неповторяющийся
+  name: getRandomArrayElement(COMMENTORS_NAMES) //сгенерировать неповторяющийся
+});
+
+const getCommentsPerPhotoCount = () =>
+  getRandomInt(COMMENT_PER_PHOTO_MAX, COMMENT_PER_PHOTO_MIN);
 
 const postPhoto = () => ({
-  id: `${getRandomArrayElement(NAMES)}`, //сгенерировать неповторяющийся
-  url: `photos/${getRandomArrayElement}.jpg`, //сгенерировать неповторяющийся
+  id: `${getRandomInt(1, POSTED_PHOTOS_COUNT)}`, //сгенерировать неповторяющийся
+  url: `photos/${getRandomInt(1, POSTED_PHOTOS_COUNT)}.jpg`, //сгенерировать неповторяющийся
   description: 'lorem ipsum', //cгенерировать description
   likes: getRandomInt(15, 200),
-  comments: Array.from({length: getRandomInt(5, 15)}, postComment)
+  comments: Array.from({length: getCommentsPerPhotoCount()}, postComment)
 });
 
 const postedPhotos = Array.from({length: POSTED_PHOTOS_COUNT}, postPhoto);
 
 console.log(postedPhotos);
-
-const postedPhoto = {
-  id: 1,
-  url: 'photos/1.jpg',
-  description: 'lorem ipsum',
-  likes: 15,
-  comments: [
-    {
-      id: 135,
-      avatar: 'img/avatar-6.svg',
-      message: 'В целом всё неплохо. Но не всё.',
-      name: 'Артём'
-    }
-  ],
-};
-
-
