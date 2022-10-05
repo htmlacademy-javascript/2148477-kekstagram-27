@@ -112,5 +112,3 @@ function postPhoto() {
 }
 
 const postedPhotos = Array.from({length: POSTED_PHOTOS_COUNT}, postPhoto);
-
-console.log(postedPhotos);
