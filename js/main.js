@@ -1,10 +1,10 @@
 const POSTED_PHOTOS_COUNT = 25;
 const COMMENT_PER_PHOTO_MIN = 2;
 const COMMENT_PER_PHOTO_MAX = 6;
-
+const DESCRIPTION_LENGTH = 140;
 const POSTED_COMMENTS_COUNT = POSTED_PHOTOS_COUNT * COMMENT_PER_PHOTO_MAX;
 
-const LOREM_IPSUM = 'Идейные соображения высшего порядка, а также новая модель организационной деятельности позволяет выполнять важные задания по разработке позиций, занимаемых участниками в отношении поставленных задач. Идейные соображения высшего порядка, а также постоянное информационно-пропагандистское обеспечение нашей деятельности требуют от нас анализа дальнейших направлений развития. Задача организации, в особенности же начало повседневной работы по формированию позиции обеспечивает широкому кругу (специалистов) участие в формировании существенных финансовых и административных условий. Товарищи! сложившаяся структура организации представляет собой интересный эксперимент проверки модели развития. Идейные соображения высшего порядка, а также укрепление и развитие структуры позволяет выполнять важные задания по разработке форм развития.';
+const LOREM_IPSUM = 'Идейные соображения высшего порядка, а также укрепление и развитие структуры представляет собой интересный эксперимент проверки систем массового участия. Идейные соображения высшего порядка, а также постоянный количественный рост и сфера нашей активности представляет собой интересный эксперимент проверки форм развития. Повседневная практика показывает, что сложившаяся структура организации позволяет выполнять важные задания по разработке модели развития. Идейные соображения высшего порядка, а также начало повседневной работы по формированию позиции представляет собой интересный эксперимент проверки направлений прогрессивного развития. Равным образом постоянное информационно-пропагандистское обеспечение нашей деятельности позволяет оценить значение новых предложений. Задача организации, в особенности же укрепление и развитие структуры требуют от нас анализа дальнейших направлений развития. С другой стороны начало повседневной работы по формированию позиции позволяет оценить значение модели развития. Значимость этих проблем настолько очевидна, что сложившаяся структура организации способствует подготовки и реализации модели развития. Задача организации, в особенности же постоянный количественный рост и сфера нашей активности требуют определения и уточнения новых предложений. Задача организации, в особенности же начало повседневной работы по формированию позиции обеспечивает широкому кругу (специалистов) участие в формировании направлений прогрессивного развития. Равным образом укрепление и развитие структуры в значительной степени обуславливает создание направлений прогрессивного развития. Повседневная практика показывает, что новая модель организационной деятельности способствует подготовке и реализации направлений прогрессивного развития. Таким образом укрепление и развитие структуры требуют от нас анализа соответствующий условий активизации. Повседневная практика показывает, что укрепление и развитие структуры позволяет оценить значение модели развития. Товарищи! постоянное информационно-пропагандистское обеспечение нашей деятельности позволяет оценить значение систем массового участия. С другой стороны реализация намеченных плановых заданий способствует подготовке и реализации соответствующий условий активизации.';
 
 const COMMENTORS_NAMES = [
   'Хельмут Ньютон',
@@ -26,7 +26,7 @@ const COMMENTORS_NAMES = [
   'Энни Лейбовиц',
   'Мик Рок',
   'Мартин Парр',
-  'Ричард КЕрн',
+  'Ричард Керн',
   'Андреас Гурски'
 ];
 
@@ -50,33 +50,66 @@ function getRandomInt(x, y) {
   return NaN;
 }
 
-function isStringFits(string, maxLength = 140) {
+function isStringFits(string, maxLength) {
   return typeof string === 'string' ? string.length <= maxLength : null;
 }
 
-getRandomInt(1.3, 1.7);
+// function getRandomArrayElement(elements) {
+//   return elements[getRandomInt(0, elements.length - 1)];
+// }
 
-isStringFits('foobar', 2);
+const uniqIds = Array.from({length: POSTED_PHOTOS_COUNT}, (x, y) => ({id: y + 1, used: false}));
+const uniqPhotoIds = Array.from({length: POSTED_PHOTOS_COUNT}, (x, y) => ({id: y + 1, used: false}));
+const uniqCommentIds = Array.from({length: POSTED_COMMENTS_COUNT}, (x, y) => ({id: y + 1, used: false}));
 
-const getRandomArrayElement = (elements) => elements[getRandomInt(0, elements.length - 1)];
+function postPhoto() {
+  function getDescription (text, maxLength) {
+    const string = `${text.split('. ')[ getRandomInt(0, text.split('. ').length - 1) ]}.`;
+    return isStringFits(string, maxLength) ? string : `${string.slice(0, maxLength - 2)}.`;
+  }
 
-const postComment = () => ({
-  id: getRandomInt(1, POSTED_COMMENTS_COUNT),
-  avatar: `img/avatar-${getRandomInt(1, 6)}.svg`, //сгенерировать неповторяющийся
-  message: getRandomArrayElement(COMMENTS), //сгенерировать неповторяющийся
-  name: getRandomArrayElement(COMMENTORS_NAMES) //сгенерировать неповторяющийся
-});
+  function getUniq(arrUnics) {
+    let index = getRandomInt(0, arrUnics.length - 1);
+    // if (arrUnics[index].notUsed) {
+    //   arrUnics[index].notUsed = false;
+    //   return arrUnics[index].id;
+    // } else {
+    //   return getUniq(arrUnics);
+    // }
+    // кажется, что перевызов функции - это не очень хорошо.
 
-const getCommentsPerPhotoCount = () =>
-  getRandomInt(COMMENT_PER_PHOTO_MAX, COMMENT_PER_PHOTO_MIN);
+    while (arrUnics[index].used) {
+      index = getRandomInt(0, arrUnics.length - 1);
+    }
+    arrUnics[index].used = true;
+    return arrUnics[index].id;
+  }
 
-const postPhoto = () => ({
-  id: `${getRandomInt(1, POSTED_PHOTOS_COUNT)}`, //сгенерировать неповторяющийся
-  url: `photos/${getRandomInt(1, POSTED_PHOTOS_COUNT)}.jpg`, //сгенерировать неповторяющийся
-  description: 'lorem ipsum', //cгенерировать description
-  likes: getRandomInt(15, 200),
-  comments: Array.from({length: getCommentsPerPhotoCount()}, postComment)
-});
+  function getCommentsCount() {
+    return getRandomInt(COMMENT_PER_PHOTO_MAX, COMMENT_PER_PHOTO_MIN);
+  }
+
+  const uniqAvatarIds = Array.from({length: COMMENT_PER_PHOTO_MAX}, (x, y) => ({id: y + 1, used: false}));
+  const uniqComents = Array.from({length: COMMENTS.length}, (x, y) => ({id: COMMENTS[y], used: false}));
+  const uniqComentorsNames = Array.from({length: COMMENTORS_NAMES.length}, (x, y) => ({id: COMMENTORS_NAMES[y], used: false}));
+
+  function postComment() {
+    return {
+      id: getUniq(uniqCommentIds),
+      avatar: `img/avatar-${getUniq(uniqAvatarIds)}.svg`,
+      message: getUniq(uniqComents),
+      name: getUniq(uniqComentorsNames)
+    };
+  }
+
+  return {
+    id: getUniq(uniqIds),
+    url: `photos/${getUniq(uniqPhotoIds)}.jpg`,
+    description: getDescription(LOREM_IPSUM, DESCRIPTION_LENGTH),
+    likes: getRandomInt(15, 200),
+    comments: Array.from({length: getCommentsCount()}, postComment)
+  };
+}
 
 const postedPhotos = Array.from({length: POSTED_PHOTOS_COUNT}, postPhoto);
 
