@@ -111,4 +111,4 @@ function postPhoto() {
   };
 }
 
-const postedPhotos = Array.from({length: POSTED_PHOTOS_COUNT}, postPhoto);
+Array.from({length: POSTED_PHOTOS_COUNT}, postPhoto);
