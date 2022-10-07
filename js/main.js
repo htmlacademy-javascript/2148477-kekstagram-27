@@ -128,4 +128,4 @@ function getPostedPhotosArr() {
 }
 
 // Do Keksobot dream of electric fish?
-console.log( getPostedPhotosArr().reverse() );
+getPostedPhotosArr().reverse();
