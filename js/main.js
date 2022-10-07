@@ -53,19 +53,24 @@ function isStringFits(string, maxLength) {
   return typeof string === 'string' ? string.length <= maxLength : null;
 }
 
-// function getRandomArrayElement(elements) {
-//   return elements[getRandomInt(0, elements.length - 1)];
-// }
-
-function getPostedCommentsCount () {
-  return POSTED_PHOTOS_COUNT * COMMENT_PER_PHOTO_MAX;
+function getCachesSet(cacheNames, valuesCounts, cachedValuesNames) {
+  const caches = {};
+  if(cacheNames.length === cachedValuesNames.length && cacheNames.length === valuesCounts.length) {
+    for (let i = 0; i < cacheNames.length; i++) {
+      caches[ cacheNames[i] ] = Array.from({length: valuesCounts[i]}, cachedValuesNames[i]);
+    }
+  }
+  return caches;
 }
 
-// function getArrUniqs(...uniqArrs) {
-//   for (let uniqArr of uniqArrs) {
-
-//   }
-// }
+function getUniqFromCachesSet(cachesSet) {
+  let index = getRandomInt(0, cachesSet.length - 1);
+  while (cachesSet[index].used) {
+    index = getRandomInt(0, cachesSet.length - 1);
+  }
+  cachesSet[index].used = true;
+  return cachesSet[index].id;
+}
 
 function getPhoto(photoCacheArray) {
   function getDescription (text, maxLength) {
@@ -73,58 +78,40 @@ function getPhoto(photoCacheArray) {
     return isStringFits(string, maxLength) ? string : `${string.slice(0, maxLength - 2)}.`;
   }
 
-  function getUniq(arrUnics) {
-    let index = getRandomInt(0, arrUnics.length - 1);
-    while (arrUnics[index].used) {
-      index = getRandomInt(0, arrUnics.length - 1);
-    }
-    arrUnics[index].used = true;
-    return arrUnics[index].id;
-  }
+  const commentCachesSet = getCachesSet(
+    ['uniqAvatarIds', 'uniqComents', 'uniqComentorsNames'],
+    [COMMENT_PER_PHOTO_MAX, COMMENTS.length, COMMENTORS_NAMES.length],
+    [(x, y) => ({id: y + 1, used: false}), (x, y) => ({id: COMMENTS[y], used: false}), (x, y) => ({id: COMMENTORS_NAMES[y], used: false})],
+  );
 
-  function getCommentsCount() {
-    return getRandomInt(COMMENT_PER_PHOTO_MAX, COMMENT_PER_PHOTO_MIN);
-  }
-
-  function getCommentUniqs() {
+  function getComment(commentCacheArray) {
     return {
-      uniqAvatarIds: Array.from({length: COMMENT_PER_PHOTO_MAX}, (x, y) => ({id: y + 1, used: false})),
-      uniqComents: Array.from({length: COMMENTS.length}, (x, y) => ({id: COMMENTS[y], used: false})),
-      uniqComentorsNames: Array.from({length: COMMENTORS_NAMES.length}, (x, y) => ({id: COMMENTORS_NAMES[y], used: false})),
+      id: getUniqFromCachesSet(photoCacheArray.uniqCommentIds),
+      avatar: `img/avatar-${getUniqFromCachesSet(commentCacheArray.uniqAvatarIds)}.svg`,
+      message: getUniqFromCachesSet(commentCacheArray.uniqComents),
+      name: getUniqFromCachesSet(commentCacheArray.uniqComentorsNames)
     };
   }
 
-  const commentUniqs = getCommentUniqs();
-
-  function postComment(commentCacheArray) {
-    return {
-      id: getUniq(photoCacheArray.uniqCommentIds),
-      avatar: `img/avatar-${getUniq(commentCacheArray.uniqAvatarIds)}.svg`,
-      message: getUniq(commentCacheArray.uniqComents),
-      name: getUniq(commentCacheArray.uniqComentorsNames)
-    };
-  }
-
+  const commentsCount = getRandomInt(COMMENT_PER_PHOTO_MAX, COMMENT_PER_PHOTO_MIN);
   return {
-    id: getUniq(photoCacheArray.uniqIds),
-    url: `photos/${getUniq(photoCacheArray.uniqPhotoIds)}.jpg`,
+    id: getUniqFromCachesSet(photoCacheArray.uniqIds),
+    url: `photos/${getUniqFromCachesSet(photoCacheArray.uniqPhotoIds)}.jpg`,
     description: getDescription(LOREM_IPSUM, DESCRIPTION_LENGTH),
     likes: getRandomInt(15, 200),
-    comments: Array.from({length: getCommentsCount()}, () => postComment(commentUniqs))
+    comments: Array.from({length: commentsCount}, () => getComment(commentCachesSet))
   };
 }
 
 function getPostedPhotosArr() {
-  function getPhotoUniqs () {
-    return {
-      uniqIds: Array.from({length: POSTED_PHOTOS_COUNT}, (x, y) => ({id: y + 1, used: false})),
-      uniqPhotoIds: Array.from({length: POSTED_PHOTOS_COUNT}, (x, y) => ({id: y + 1, used: false})),
-      uniqCommentIds: Array.from({length: getPostedCommentsCount()}, (x, y) => ({id: y + 1, used: false})),
-    };
-  }
-  const photoUniqs = getPhotoUniqs();
+  const postedCommentsCount = POSTED_PHOTOS_COUNT * COMMENT_PER_PHOTO_MAX;
+  const photoCachesSet = getCachesSet(
+    ['uniqIds', 'uniqPhotoIds', 'uniqCommentIds'],
+    [POSTED_PHOTOS_COUNT, POSTED_PHOTOS_COUNT, postedCommentsCount],
+    [(x, y) => ({id: y + 1, used: false}), (x, y) => ({id: y + 1, used: false}), (x, y) => ({id: y + 1, used: false})]
+  );
 
-  return Array.from( {length: POSTED_PHOTOS_COUNT}, () => getPhoto(photoUniqs) );
+  return Array.from( {length: POSTED_PHOTOS_COUNT}, () => getPhoto(photoCachesSet) );
 }
 
 // Do Keksobot dream of electric fish?
