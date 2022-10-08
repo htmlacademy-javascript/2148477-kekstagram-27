@@ -13,4 +13,6 @@ tasks:
   - init: ssh-add /workspace/.ssh/id_ed25519
 
   - command: ssh -T git@github.com
+
+  - command: git remote add academy git@github.com:htmlacademy-javascript/2148477-kekstagram-27.git
   
