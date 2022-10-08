@@ -53,66 +53,55 @@ function isStringFits(string, maxLength) {
   return typeof string === 'string' ? string.length <= maxLength : null;
 }
 
-function getCachesSet(cacheNames, valuesCounts, cachedValuesNames) {
-  const caches = {};
-  if(cacheNames.length === cachedValuesNames.length && cacheNames.length === valuesCounts.length) {
-    for (let i = 0; i < cacheNames.length; i++) {
-      caches[ cacheNames[i] ] = Array.from({length: valuesCounts[i]}, cachedValuesNames[i]);
-    }
-  }
-  return caches;
-}
+function getUniqRandomValue (fn, ...args) {
+  const cache = [];
 
-function getUniqFromCachesSet(cachesSet) {
-  let index = getRandomInt(0, cachesSet.length - 1);
-  while (cachesSet[index].used) {
-    index = getRandomInt(0, cachesSet.length - 1);
-  }
-  cachesSet[index].used = true;
-  return cachesSet[index].id;
-}
+  return function () {
+    let value;
 
-function getPhoto(photoCacheArray) {
-  function getDescription (text, maxLength) {
-    const string = `${text.split('. ')[ getRandomInt(0, text.split('. ').length - 1) ]}.`;
-    return isStringFits(string, maxLength) ? string : `${string.slice(0, maxLength - 2)}.`;
-  }
+    do {
+      value = fn(...args);
+    } while ( cache.includes(value) );
 
-  const commentCachesSet = getCachesSet(
-    ['uniqAvatarIds', 'uniqComents', 'uniqComentorsNames'],
-    [COMMENT_PER_PHOTO_MAX, COMMENTS.length, COMMENTORS_NAMES.length],
-    [(x, y) => ({id: y + 1, used: false}), (x, y) => ({id: COMMENTS[y], used: false}), (x, y) => ({id: COMMENTORS_NAMES[y], used: false})],
-  );
-
-  function getComment(commentCacheArray) {
-    return {
-      id: getUniqFromCachesSet(photoCacheArray.uniqCommentIds),
-      avatar: `img/avatar-${getUniqFromCachesSet(commentCacheArray.uniqAvatarIds)}.svg`,
-      message: getUniqFromCachesSet(commentCacheArray.uniqComents),
-      name: getUniqFromCachesSet(commentCacheArray.uniqComentorsNames)
-    };
-  }
-
-  const commentsCount = getRandomInt(COMMENT_PER_PHOTO_MAX, COMMENT_PER_PHOTO_MIN);
-  return {
-    id: getUniqFromCachesSet(photoCacheArray.uniqIds),
-    url: `photos/${getUniqFromCachesSet(photoCacheArray.uniqPhotoIds)}.jpg`,
-    description: getDescription(LOREM_IPSUM, DESCRIPTION_LENGTH),
-    likes: getRandomInt(15, 200),
-    comments: Array.from({length: commentsCount}, () => getComment(commentCachesSet))
+    cache.push(value);
+    return value;
   };
 }
 
-function getPostedPhotosArr() {
-  const postedCommentsCount = POSTED_PHOTOS_COUNT * COMMENT_PER_PHOTO_MAX;
-  const photoCachesSet = getCachesSet(
-    ['uniqIds', 'uniqPhotoIds', 'uniqCommentIds'],
-    [POSTED_PHOTOS_COUNT, POSTED_PHOTOS_COUNT, postedCommentsCount],
-    [(x, y) => ({id: y + 1, used: false}), (x, y) => ({id: y + 1, used: false}), (x, y) => ({id: y + 1, used: false})]
-  );
+function getPhotosArr() {
+  const getUniqRandomId = getUniqRandomValue(getRandomInt, 1, POSTED_PHOTOS_COUNT);
+  const getUniqRandomPhoto = getUniqRandomValue(getRandomInt, 1, POSTED_PHOTOS_COUNT);
+  const getUniqRandomCommentId = getUniqRandomValue(getRandomInt, 1, POSTED_PHOTOS_COUNT * COMMENT_PER_PHOTO_MAX);
 
-  return Array.from( {length: POSTED_PHOTOS_COUNT}, () => getPhoto(photoCachesSet) );
+  function getPhoto() {
+    function getDescription (text, maxLength) {
+      const string = `${text.split('. ')[ getRandomInt(0, text.split('. ').length - 1) ]}.`;
+      return isStringFits(string, maxLength) ? string : `${string.slice(0, maxLength - 2)}.`;
+    }
+
+    const getUniqRandomAvatar = getUniqRandomValue(getRandomInt, 1, COMMENT_PER_PHOTO_MAX);
+    const getUniqRandomMessage = getUniqRandomValue(getRandomInt, 0, COMMENT_PER_PHOTO_MAX - 1);
+    const getUniqRandomCommentorName = getUniqRandomValue(getRandomInt, 0, COMMENTORS_NAMES.length - 1);
+
+    function getComment() {
+      return {
+        id: getUniqRandomCommentId(),
+        avatar: `img/avatar-${ getUniqRandomAvatar() }.svg`,
+        message: COMMENTS[ getUniqRandomMessage() ],
+        name: COMMENTORS_NAMES[ getUniqRandomCommentorName() ],
+      };
+    }
+
+    return {
+      id: getUniqRandomId(),
+      url: `photos/${ getUniqRandomPhoto() }.jpg`,
+      description: getDescription(LOREM_IPSUM, DESCRIPTION_LENGTH),
+      likes: getRandomInt(15, 200),
+      comments: Array.from({length: getRandomInt(COMMENT_PER_PHOTO_MAX, COMMENT_PER_PHOTO_MIN)}, getComment),
+    };
+  }
+
+  return Array.from({length: POSTED_PHOTOS_COUNT}, getPhoto);
 }
 
-// Do Keksobot dream of electric fish?
-getPostedPhotosArr().reverse();
+getPhotosArr().reverse();
