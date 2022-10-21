@@ -1,3 +1,1 @@
-import getReversePhotosArr from './miniatures.js';
-
-getReversePhotosArr().reverse();
+import './miniatures.js';
