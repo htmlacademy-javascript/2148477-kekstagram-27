@@ -1,24 +1,11 @@
-import {getPhotosArr} from './generate-data.js';
-import {getBigPicture} from './big-picture.js';
+function getMiniature (data, template) {
+  const photo = template.cloneNode(true);
 
-const photoContainer = document.querySelector('.pictures');
-const photoTemplate = document.querySelector('#picture')
-  .content
-  .querySelector('.picture');
+  photo.querySelector('.picture__img').src = data.url;
+  photo.querySelector('.picture__comments').textContent = data.comments.length;
+  photo.querySelector('.picture__likes').textContent = data.likes;
 
-const photosArr = getPhotosArr();
-const photosListFragment = document.createDocumentFragment();
+  return photo;
+}
 
-photosArr.forEach((photoData) => {
-  const photo = photoTemplate.cloneNode(true);
-  photo.querySelector('.picture__img').src = photoData.url;
-  photo.querySelector('.picture__comments').textContent = photoData.comments.length;
-  photo.querySelector('.picture__likes').textContent = photoData.likes;
-  photo.addEventListener('click', (evt) => {
-    evt.preventDefault();
-    getBigPicture(photoData);
-  });
-  photosListFragment.append(photo);
-});
-
-photoContainer.append(photosListFragment);
+export {getMiniature};

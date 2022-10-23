@@ -13,4 +13,27 @@ function isStringFits(string, maxLength) {
   return typeof string === 'string' ? string.length <= maxLength : null;
 }
 
-export {getRandomInt, isStringFits};
+function openModal(modal) {
+  const closeButton = modal.querySelector('.cancel');
+
+  function close(evt) {
+    modal.classList.add('hidden');
+    document.body.classList.remove('modal-open');
+
+    if (evt.code === 'Escape') {
+      modal.classList.add('hidden');
+      document.body.classList.remove('modal-open');
+    }
+
+    closeButton.removeEventListener('click', close);
+    document.removeEventListener('keydown', close);
+  }
+
+  closeButton.addEventListener('click', close);
+  document.addEventListener('keydown', close);
+
+  modal.classList.remove('hidden');
+  document.body.classList.add('modal-open');
+}
+
+export {getRandomInt, isStringFits, openModal};
