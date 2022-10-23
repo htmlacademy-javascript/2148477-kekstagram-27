@@ -17,16 +17,13 @@ function openModal(modal) {
   const closeButton = modal.querySelector('.cancel');
 
   function close(evt) {
-    modal.classList.add('hidden');
-    document.body.classList.remove('modal-open');
-
-    if (evt.code === 'Escape') {
+    if (evt.code === 'Escape' || evt.type === 'click') {
       modal.classList.add('hidden');
       document.body.classList.remove('modal-open');
-    }
 
-    closeButton.removeEventListener('click', close);
-    document.removeEventListener('keydown', close);
+      closeButton.removeEventListener('click', close);
+      document.removeEventListener('keydown', close);
+    }
   }
 
   closeButton.addEventListener('click', close);
