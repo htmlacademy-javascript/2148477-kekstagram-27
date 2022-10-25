@@ -13,23 +13,33 @@ function isStringFits(string, maxLength) {
   return typeof string === 'string' ? string.length <= maxLength : null;
 }
 
-function openModal(modal) {
-  const closeButton = modal.querySelector('.cancel');
+function closeModal(evt) {
+  if (evt.code === 'Escape' || evt.type === 'click') {
+    this.window.classList.add('hidden');
+    document.body.classList.remove('modal-open');
 
-  function close(evt) {
-    if (evt.code === 'Escape' || evt.type === 'click') {
-      modal.classList.add('hidden');
-      document.body.classList.remove('modal-open');
-
-      closeButton.removeEventListener('click', close);
-      document.removeEventListener('keydown', close);
-    }
+    this.button.removeEventListener('click', this);
+    document.removeEventListener('keydown', this);
   }
+}
 
-  closeButton.addEventListener('click', close);
-  document.addEventListener('keydown', close);
+function getCloseButton (modal) {
+  return (modal.querySelector('.cancel') || modal.querySelector('.success__button') || modal.querySelector('.error__button'));
+}
 
-  modal.classList.remove('hidden');
+function openModal(modalSelector) {
+  const currentModal = document.querySelector(modalSelector);
+  const closeButton = getCloseButton(currentModal);
+  const objListenerCallback = {
+    handleEvent: closeModal,
+    window: currentModal,
+    button: closeButton,
+  };
+
+  closeButton.addEventListener('click', objListenerCallback);
+  document.addEventListener('keydown', objListenerCallback);
+
+  currentModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
 }
 
