@@ -1,8 +1,7 @@
-import {openModal} from './util.js';
+import {openModal} from './modal.js';
 
 function getBigPicture (data) {
-  const MODAL_BIG_PICTURE_SELECTOR = '.big-picture';
-  const bigPictureOverlay = document.querySelector(MODAL_BIG_PICTURE_SELECTOR);
+  const bigPictureOverlay = document.querySelector('.big-picture');
 
   // временно прячем блоки
   bigPictureOverlay.querySelector('.social__comment-count').classList.add('hidden');
@@ -31,7 +30,7 @@ function getBigPicture (data) {
 
   commentsList.append(commentsListFragment);
 
-  openModal(MODAL_BIG_PICTURE_SELECTOR);
+  openModal(bigPictureOverlay);
 }
 
 export {getBigPicture};
