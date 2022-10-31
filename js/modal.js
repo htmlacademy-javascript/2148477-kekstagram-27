@@ -5,6 +5,10 @@ function closeModal(evt) {
 
     this.button.removeEventListener('click', this);
     document.removeEventListener('keydown', this);
+
+    for (const input of this.toReset) {
+      input.value = '';
+    }
   }
 }
 
@@ -12,12 +16,13 @@ function getCloseButton (modal) {
   return (modal.querySelector('.cancel') || modal.querySelector('.success__button') || modal.querySelector('.error__button'));
 }
 
-function openModal(modal) {
+function openModal(modal, ...inputsToReset) {
   const closeButton = getCloseButton(modal);
   const objListenerCallback = {
     handleEvent: closeModal,
     window: modal,
     button: closeButton,
+    toReset: inputsToReset,
   };
 
   closeButton.addEventListener('click', objListenerCallback);
