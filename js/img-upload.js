@@ -1,26 +1,28 @@
 import {openModal} from './modal.js';
+import {isValid} from './validate-form.js';
 
 const imgUploadForm = document.querySelector('.img-upload__form');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const imgUploadInput = document.querySelector('.img-upload__input');
 const imgHashtagsInput = document.querySelector('.text__hashtags');
 const imgDescriptionInput = document.querySelector('.text__description');
+const imgUploadButton = document.querySelector('.img-upload__submit');
 
-imgUploadInput.addEventListener('change', () => {openModal(imgUploadOverlay, imgUploadInput, imgHashtagsInput, imgDescriptionInput);});
+imgUploadInput.addEventListener('change', () => {
+  openModal(imgUploadOverlay, imgUploadInput, imgHashtagsInput, imgDescriptionInput);
 
-const pristine = new Pristine(imgUploadForm, {
-  classTo: 'setup-wizard-form__element',
-  errorTextParent: 'setup-wizard-form__element',
-  errorTextClass: 'setup-wizard-form__error-text',
+  imgUploadForm.addEventListener('input', onFormFieldsInput);
+  // TODO добавить снятие обработчиков при отправке формы
 });
 
-imgUploadForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
+function onFormFieldsInput(evt) {
+  evt.stopPropagation();
 
-  const isValid = pristine.validate();
-  if (isValid) {
-    console.log('Можно отправлять');
+  if ( isValid(imgUploadForm) ) {
+    imgUploadButton.removeAttribute('disabled', 'disabled');
   } else {
-    console.log('Форма невалидна');
+    imgUploadButton.setAttribute('disabled', 'disabled');
   }
-});
+}
+
+export {onFormFieldsInput};

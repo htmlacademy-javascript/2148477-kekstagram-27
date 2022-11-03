@@ -1,10 +1,14 @@
+import {onFormFieldsInput} from './img-upload.js';
+
 function closeModal(evt) {
-  if (evt.code === 'Escape' || evt.type === 'click') {
+  // TODO разделить обработчик на два klick & keydown
+  if (!evt.target.classList.contains('no-esc') && evt.code === 'Escape' || evt.type === 'click') {
     this.window.classList.add('hidden');
     document.body.classList.remove('modal-open');
 
     this.button.removeEventListener('click', this);
     document.removeEventListener('keydown', this);
+    this.form.removeEventListener('input', onFormFieldsInput);
 
     for (const input of this.toReset) {
       input.value = '';
@@ -21,6 +25,7 @@ function openModal(modal, ...inputsToReset) {
   const objListenerCallback = {
     handleEvent: closeModal,
     window: modal,
+    form: modal.parentNode,
     button: closeButton,
     toReset: inputsToReset,
   };
