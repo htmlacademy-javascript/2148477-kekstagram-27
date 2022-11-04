@@ -1,21 +1,36 @@
 import {openModal} from './modal.js';
 
+const bigPictureOverlay = document.querySelector('.big-picture');
+
+const commentsList = bigPictureOverlay.querySelector('.social__comments');
+const newCommentInput = bigPictureOverlay.querySelector('.social__footer-text');
+const moreCommentsButton = bigPictureOverlay.querySelector('.social__comments-loader');
+const commentsCounterTotal = bigPictureOverlay.querySelector('.comments-count');
+const commentsCounterShown = bigPictureOverlay.querySelector('.comments-count-shown');
+const commentTemplate = commentsList.querySelector('.social__comment');
+const commentsListFragment = document.createDocumentFragment();
+
+
 function getBigPicture (data) {
-  const bigPictureOverlay = document.querySelector('.big-picture');
-
-  // временно прячем блоки
-  bigPictureOverlay.querySelector('.social__comment-count').classList.add('hidden');
-  bigPictureOverlay.querySelector('.comments-loader').classList.add('hidden');
-
-  const commentsList = bigPictureOverlay.querySelector('.social__comments');
-  const commentTemplate = commentsList.querySelector('.social__comment');
-  const commentsListFragment = document.createDocumentFragment();
   commentsList.innerHTML = '';
 
   bigPictureOverlay.querySelector('.big-picture__img > img').src = data.url;
   bigPictureOverlay.querySelector('.likes-count').textContent = data.likes;
-  bigPictureOverlay.querySelector('.comments-count').textContent = data.comments.length;
+  commentsCounterShown.textContent = data.comments.length < 5 ? data.comments.length : 5;
+  commentsCounterTotal.textContent = data.comments.length;
   bigPictureOverlay.querySelector('.social__caption').textContent = data.description;
+
+  // TODO Добавить обработчик на enter
+  if (commentsCounterShown.textContent !== commentsCounterTotal.textContent) {
+    moreCommentsButton.addEventListener('click', onMoreCommentsClick);
+    moreCommentsButton.style.color = '#3b77c0';
+    moreCommentsButton.style.cursor = 'pointer';
+    moreCommentsButton.classList.add('comments-loader');
+  } else {
+    moreCommentsButton.style.color = 'lightgrey';
+    moreCommentsButton.style.cursor = 'auto';
+    moreCommentsButton.classList.remove('comments-loader');
+  }
 
   data.comments.forEach((comment) => {
     const newComment = commentTemplate.cloneNode(true);
@@ -26,11 +41,37 @@ function getBigPicture (data) {
     newComment.querySelector('.social__text').textContent = comment.message;
 
     commentsListFragment.append(newComment);
+
+    if (commentsListFragment.childNodes.length > 5) {
+      commentsListFragment.lastChild.classList.add('hidden');
+    }
   });
 
   commentsList.append(commentsListFragment);
 
-  openModal(bigPictureOverlay);
+  openModal(bigPictureOverlay, newCommentInput);
 }
 
-export {getBigPicture};
+function onMoreCommentsClick () {
+  let counter = 0;
+
+  for (const comment of commentsList.childNodes) {
+    if (counter === 5) {
+      break;
+    } else if (comment.classList.contains('hidden')) {
+      comment.classList.remove('hidden');
+      counter++;
+    }
+  }
+
+  commentsCounterShown.textContent = +commentsCounterShown.textContent + counter;
+
+  if (commentsCounterShown.textContent === commentsCounterTotal.textContent) {
+    moreCommentsButton.removeEventListener('click', onMoreCommentsClick);
+    moreCommentsButton.style.color = 'lightgrey';
+    moreCommentsButton.style.cursor = 'auto';
+    moreCommentsButton.classList.remove('comments-loader');
+  }
+}
+
+export {getBigPicture, onMoreCommentsClick};
