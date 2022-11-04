@@ -1,3 +1,6 @@
+const HASHTAGS_MAX_QUANTITY = 5;
+const HASHTAG_MAX_LENGTH = 20;
+
 function isValid(form) {
   const pristine = new Pristine(form, {
     // class of the parent element where the error/success class is added
@@ -42,7 +45,7 @@ function isValid(form) {
 
   pristine.addValidator(
     form.querySelector('.text__hashtags'),
-    validateHashtagMaxQuanity,
+    validateHashtagMaxQuantity,
     'Не более 5 хештегов.'
   );
 
@@ -67,12 +70,12 @@ function validateHashtagUniq (value) {
   );
 }
 
-function validateHashtagMaxQuanity (value) {
-  return getHashtagsArr(value).length < 6;
+function validateHashtagMaxQuantity (value) {
+  return getHashtagsArr(value).length <= HASHTAGS_MAX_QUANTITY;
 }
 
 function validateHashtagMaxLength (value) {
-  return getHashtagsArr(value).reduce((result, hashtag) => result && hashtag.length < 21, true);
+  return getHashtagsArr(value).reduce((result, hashtag) => result && hashtag.length <= HASHTAG_MAX_LENGTH, true);
 }
 
 function validateHashtagLetters (value) {
