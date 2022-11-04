@@ -191,7 +191,7 @@ main {
   grid-gap: 10px;
 
   -ms-grid-columns: (1fr)[7];
-      grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, 1fr);
 }
 
 .picture {
@@ -383,6 +383,7 @@ main {
   height: 100%;
 
   padding-top: 60px;
+  /* padding-bottom: 60px; */
   overflow: auto;
 
   background-color: rgba(0, 0, 0, 0.8);
@@ -701,6 +702,7 @@ main {
   height: 100px;
 
   margin: 0 auto;
+  margin-bottom: 20px;
   padding: 15px 10px;
 
   font-family: "Open Sans", "Arial", sans-serif;
@@ -708,7 +710,32 @@ main {
   color: #000000;
 
   border-radius: 5px;
+
+  resize: none;
 }
+
+.img-upload__field-wrapper {
+  position: relative;
+}
+
+.img-upload__error-text {
+  position: absolute;
+  top: 33px;
+  left: 70px;
+
+  height: 0px;
+  width: 435px;
+
+  text-align: start;
+
+  /* line-height: 11px; */
+  font-size: 11px;
+  color: #8ac8d0;
+}
+
+/* .has-danger {
+  outline: 5px solid red;
+} */
 
 
 /**
