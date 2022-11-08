@@ -4,7 +4,13 @@ const bigPictureOverlay = document.querySelector('.big-picture');
 
 const commentsList = bigPictureOverlay.querySelector('.social__comments');
 const newCommentInput = bigPictureOverlay.querySelector('.social__footer-text');
+
 const moreCommentsButton = bigPictureOverlay.querySelector('.social__comments-loader');
+const moreCommentsButtonDisabled = moreCommentsButton.cloneNode(true);
+moreCommentsButtonDisabled.style.color = 'lightgrey';
+moreCommentsButtonDisabled.style.cursor = 'auto';
+moreCommentsButtonDisabled.classList.remove('comments-loader');
+
 const commentsCounterTotal = bigPictureOverlay.querySelector('.comments-count');
 const commentsCounterShown = bigPictureOverlay.querySelector('.comments-count-shown');
 const commentTemplate = commentsList.querySelector('.social__comment');
@@ -21,15 +27,11 @@ function getBigPicture (data) {
   bigPictureOverlay.querySelector('.social__caption').textContent = data.description;
 
   // TODO Добавить обработчик на enter
-  if (commentsCounterShown.textContent !== commentsCounterTotal.textContent) {
+  if (commentsCounterShown.textContent !== commentsCounterTotal.textContent && bigPictureOverlay.contains(moreCommentsButtonDisabled)) {
     moreCommentsButton.addEventListener('click', onMoreCommentsClick);
-    moreCommentsButton.style.color = '#3b77c0';
-    moreCommentsButton.style.cursor = 'pointer';
-    moreCommentsButton.classList.add('comments-loader');
+    moreCommentsButtonDisabled.replaceWith(moreCommentsButton);
   } else {
-    moreCommentsButton.style.color = 'lightgrey';
-    moreCommentsButton.style.cursor = 'auto';
-    moreCommentsButton.classList.remove('comments-loader');
+    moreCommentsButton.replaceWith(moreCommentsButtonDisabled);
   }
 
   data.comments.forEach((comment) => {
@@ -68,9 +70,7 @@ function onMoreCommentsClick () {
 
   if (commentsCounterShown.textContent === commentsCounterTotal.textContent) {
     moreCommentsButton.removeEventListener('click', onMoreCommentsClick);
-    moreCommentsButton.style.color = 'lightgrey';
-    moreCommentsButton.style.cursor = 'auto';
-    moreCommentsButton.classList.remove('comments-loader');
+    moreCommentsButton.replaceWith(moreCommentsButtonDisabled);
   }
 }
 

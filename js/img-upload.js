@@ -19,9 +19,9 @@ function onFormFieldsInput(evt) {
   evt.stopPropagation();
 
   if ( isValid(imgUploadForm) ) {
-    imgUploadButton.removeAttribute('disabled', 'disabled');
+    imgUploadButton.removeAttribute('disabled');
   } else {
-    imgUploadButton.setAttribute('disabled', 'disabled');
+    imgUploadButton.setAttribute('disabled', true);
   }
 }
 
