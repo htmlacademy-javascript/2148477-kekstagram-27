@@ -8,17 +8,18 @@ const imgUploadInput = document.querySelector('.img-upload__input');
 const imgHashtagsInput = document.querySelector('.text__hashtags');
 const imgDescriptionInput = document.querySelector('.text__description');
 const imgUploadButton = document.querySelector('.img-upload__submit');
+const previewImage = document.querySelector('.img-upload__preview > img');
 
 imgUploadInput.addEventListener('change', () => {
   openModal(imgUploadOverlay, imgUploadInput, imgHashtagsInput, imgDescriptionInput);
+  previewImage.classList = '';
+  previewImage.classList.add('effects__preview--none', 'img-upload__preview-scale100');
 
   imgUploadForm.addEventListener('input', onFormFieldsInput);
   // TODO добавить снятие обработчиков при отправке формы
 });
 
-function onFormFieldsInput(evt) {
-  evt.stopPropagation();
-
+function onFormFieldsInput() {
   if ( isValid(imgUploadForm) ) {
     imgUploadButton.removeAttribute('disabled');
   } else {

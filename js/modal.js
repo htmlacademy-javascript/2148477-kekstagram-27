@@ -10,7 +10,9 @@ function closeModal(evt) {
     this.button.removeEventListener('click', this);
     document.removeEventListener('keydown', this);
     this.form.removeEventListener('input', onFormFieldsInput);
-    this.window.querySelector('.social__comments-loader').removeEventListener('click', onMoreCommentsClick);
+    if (this.window.querySelector('.social__comments-loader')) {
+      this.window.querySelector('.social__comments-loader').removeEventListener('click', onMoreCommentsClick);
+    }
 
     for (const input of this.toReset) {
       input.value = '';

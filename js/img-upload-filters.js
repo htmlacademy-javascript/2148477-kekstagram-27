@@ -1,7 +1,11 @@
+import {toggleEffect} from './img-effects.js';
+
 const imgScaleSmallerButton = document.querySelector('.scale__control--smaller');
 const imgScaleBiggerButton = document.querySelector('.scale__control--bigger');
 const imgScaleInput = document.querySelector('.scale__control--value');
 const previewImage = document.querySelector('.img-upload__preview > img');
+
+const effectsRadio = document.querySelector('.effects__list');
 
 function upScale() {
   switch (imgScaleInput.value) {
@@ -51,3 +55,10 @@ function downScale() {
 
 imgScaleSmallerButton.addEventListener('click', downScale);
 imgScaleBiggerButton.addEventListener('click', upScale);
+
+effectsRadio.addEventListener(
+  'click',
+  (evt) => {
+    toggleEffect(evt.target, previewImage);
+  }
+);
