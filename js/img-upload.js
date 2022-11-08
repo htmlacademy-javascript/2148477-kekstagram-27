@@ -1,3 +1,4 @@
+import './img-upload-filters.js';
 import {openModal} from './modal.js';
 import {isValid} from './validate-form.js';
 
