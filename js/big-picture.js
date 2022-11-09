@@ -58,7 +58,7 @@ function onMoreCommentsClick () {
   let counter = 0;
 
   for (const comment of commentsList.childNodes) {
-    if (counter === 5) {
+    if (counter % 5 === 0) {
       break;
     } else if (comment.classList.contains('hidden')) {
       comment.classList.remove('hidden');
