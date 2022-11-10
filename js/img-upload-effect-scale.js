@@ -26,8 +26,8 @@ function upScale(max, step) {
   // }
 
   currentScale = (currentScale + step > max) ? max : currentScale + step;
-  imgScaleInput.value = currentScale > max ? `${max}%` : `${currentScale}%`;
-  previewImage.style.transform = currentScale > max ? `scale(${max / 100})` : `scale(${currentScale / 100})`;
+  imgScaleInput.value = `${currentScale}%`;
+  previewImage.style.transform = `scale(${currentScale / 100})`;
 }
 
 function downScale(min, step) {
@@ -54,7 +54,7 @@ function downScale(min, step) {
 
   currentScale = (currentScale - step < min) ? min : currentScale - step;
   imgScaleInput.value = `${currentScale}%`;
-  previewImage.style.transform = currentScale < min ? `scale(${min / 100})` : `scale(${currentScale / 100})`;
+  previewImage.style.transform = `scale(${currentScale / 100})`;
 }
 
 export {upScale, downScale};
