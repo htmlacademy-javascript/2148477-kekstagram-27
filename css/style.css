@@ -394,6 +394,22 @@ main {
   margin-bottom: 30px;
 }
 
+.img-upload__preview-scale25 {
+  transform: scale(0.25);
+}
+
+.img-upload__preview-scale50 {
+  transform: scale(0.5);
+}
+
+.img-upload__preview-scale75 {
+  transform: scale(0.75);
+}
+
+.img-upload__preview-scale100 {
+  transform: scale(1);
+}
+
 
 /**
  * Кнопки изменения масштаба изобраения
