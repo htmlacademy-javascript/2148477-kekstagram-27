@@ -22,6 +22,10 @@ const SCALE_MAX = 100;
 const SCALE_STEP = 25;
 const SCALE_DEFAULT = 100;
 
+
+imgScaleSmallerButton.addEventListener('click', () => {downScale(SCALE_MIN, SCALE_STEP);});
+imgScaleBiggerButton.addEventListener('click', () => {upScale(SCALE_MAX, SCALE_STEP);});
+
 imgUploadInput.addEventListener('change', onImgUploadInputChange);
 
 function onImgUploadInputChange () {
@@ -35,8 +39,7 @@ function onImgUploadInputChange () {
   imgUploadForm.addEventListener('input', onFormFieldsInput);
   // TODO добавить снятие обработчиков при отправке формы
 
-  imgScaleSmallerButton.addEventListener('click', () => {downScale(SCALE_MIN, SCALE_STEP);});
-  imgScaleBiggerButton.addEventListener('click', () => {upScale(SCALE_MAX, SCALE_STEP);});
+
 
   if (effectSliderWrap.noUiSlider) {
     effectSliderWrap.noUiSlider.destroy();
