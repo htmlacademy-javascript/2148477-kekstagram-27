@@ -1,9 +1,6 @@
-const imgScaleSmallerButton = document.querySelector('.scale__control--smaller');
-const imgScaleBiggerButton = document.querySelector('.scale__control--bigger');
 const imgScaleInput = document.querySelector('.scale__control--value');
 const previewImage = document.querySelector('.img-upload__preview > img');
 
-const effectsRadio = document.querySelector('.effects__list');
 let currentEffect = 'effects__preview--none';
 let currentStyle = '';
 let styleUnits = '';
@@ -59,12 +56,7 @@ function downScale() {
   }
 }
 
-imgScaleSmallerButton.addEventListener('click', downScale);
-imgScaleBiggerButton.addEventListener('click', upScale);
-
 // filter effects
-
-effectsRadio.addEventListener('click', toggleEffect);
 
 function toggleEffect(evt) {
   if (evt.target.classList.contains('effects__preview')) {
@@ -168,3 +160,5 @@ function toggleEffect(evt) {
       effectLevelInput.value = '';
   }
 }
+
+export {upScale, downScale, toggleEffect};
