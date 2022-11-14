@@ -27,7 +27,6 @@ function getBigPicture (data) {
   bigPictureOverlay.querySelector('.social__caption').textContent = data.description;
 
   // TODO Добавить обработчик на enter
-  // && bigPictureOverlay.contains(moreCommentsButtonDisabled)
   if (commentsCounterShown.textContent !== commentsCounterTotal.textContent) {
     moreCommentsButton.addEventListener('click', onMoreCommentsClick);
     moreCommentsButtonDisabled.replaceWith(moreCommentsButton);

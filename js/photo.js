@@ -1,6 +1,7 @@
 import {getPhotosArr} from './download-data.js';
 import {getBigPicture} from './big-picture.js';
 import {getMiniature} from './miniatures.js';
+import {showAlert} from './util.js';
 
 const photoContainer = document.querySelector('.pictures');
 const miniatureTemplate = document.querySelector('#picture')
@@ -28,4 +29,4 @@ function showPhotos(photos) {
   photoContainer.append(getPhotosListFragment(photos));
 }
 
-getPhotosArr((photosArr) => showPhotos(photosArr));
+getPhotosArr((photosArr) => showPhotos(photosArr), () => {showAlert('Не удалось загрузить фотографии');});
