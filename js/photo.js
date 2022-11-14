@@ -1,4 +1,4 @@
-import {getPhotosArr} from './generate-data.js';
+import {getPhotosArr} from './download-data.js';
 import {getBigPicture} from './big-picture.js';
 import {getMiniature} from './miniatures.js';
 
@@ -7,18 +7,25 @@ const miniatureTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 
-const generatedPhotos = getPhotosArr();
-const photosListFragment = document.createDocumentFragment();
+function getPhotosListFragment (photosArr) {
+  const photosListFragment = document.createDocumentFragment();
 
-generatedPhotos.forEach((photoData) => {
-  const newPhoto = getMiniature(photoData, miniatureTemplate);
+  photosArr.forEach((photoData) => {
+    const newPhoto = getMiniature(photoData, miniatureTemplate);
 
-  newPhoto.addEventListener('click', (evt) => {
-    evt.preventDefault();
-    getBigPicture(photoData);
+    newPhoto.addEventListener('click', (evt) => {
+      evt.preventDefault();
+      getBigPicture(photoData);
+    });
+
+    photosListFragment.append(newPhoto);
   });
 
-  photosListFragment.append(newPhoto);
-});
+  return photosListFragment;
+}
 
-photoContainer.append(photosListFragment);
+function showPhotos(photos) {
+  photoContainer.append(getPhotosListFragment(photos));
+}
+
+getPhotosArr((photosArr) => showPhotos(photosArr));

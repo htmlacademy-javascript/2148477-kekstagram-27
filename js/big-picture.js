@@ -27,7 +27,8 @@ function getBigPicture (data) {
   bigPictureOverlay.querySelector('.social__caption').textContent = data.description;
 
   // TODO Добавить обработчик на enter
-  if (commentsCounterShown.textContent !== commentsCounterTotal.textContent && bigPictureOverlay.contains(moreCommentsButtonDisabled)) {
+  // && bigPictureOverlay.contains(moreCommentsButtonDisabled)
+  if (commentsCounterShown.textContent !== commentsCounterTotal.textContent) {
     moreCommentsButton.addEventListener('click', onMoreCommentsClick);
     moreCommentsButtonDisabled.replaceWith(moreCommentsButton);
   } else {
@@ -58,7 +59,7 @@ function onMoreCommentsClick () {
   let counter = 0;
 
   for (const comment of commentsList.childNodes) {
-    if (counter % 5 === 0) {
+    if (counter !== 0 && counter % 5 === 0) {
       break;
     } else if (comment.classList.contains('hidden')) {
       comment.classList.remove('hidden');
