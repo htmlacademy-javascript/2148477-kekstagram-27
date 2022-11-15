@@ -1,4 +1,4 @@
-import {getPhotosArr} from './download-data.js';
+import {getPhotosArr} from './data-download.js';
 import {getBigPicture} from './big-picture.js';
 import {getMiniature} from './miniatures.js';
 import {showAlert} from './util.js';

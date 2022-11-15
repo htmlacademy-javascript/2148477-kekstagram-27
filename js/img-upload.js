@@ -36,10 +36,8 @@ function onImgUploadInputChange () {
   previewImage.style.filter = '';
   imgScaleInput.value = `${SCALE_DEFAULT}%`;
 
+  imgUploadForm.addEventListener('change', onFormFieldsInput);
   imgUploadForm.addEventListener('input', onFormFieldsInput);
-  // TODO добавить снятие обработчиков при отправке формы
-
-
 
   if (effectSliderWrap.noUiSlider) {
     effectSliderWrap.noUiSlider.destroy();
