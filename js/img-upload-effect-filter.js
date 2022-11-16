@@ -17,7 +17,7 @@ const EFFECTS_LIBRARY = {
       step: 1,
       start: 1,
     },
-    StyleName: '',
+    styleName: '',
     styleUnits: '',
   },
   chrome: {
@@ -85,9 +85,9 @@ const EFFECTS_LIBRARY = {
 function toggleEffect(evt) {
   if (evt.target.classList.contains('effects__preview')) {
     previewImage.classList.remove(currentEffectClass);
-    previewImage.classList.add(evt.target.classList[1]);
-    currentEffectClass = evt.target.classList[1];
-    currentEffect = currentEffectClass.slice(18);
+    previewImage.classList.add(`effects__preview__${evt.target.dataset.effect}`);
+    currentEffectClass = `effects__preview__${evt.target.dataset.effect}`;
+    currentEffect = evt.target.dataset.effect;
     currentStyleName = EFFECTS_LIBRARY[currentEffect].StyleName;
     currentStyleUnits = EFFECTS_LIBRARY[currentEffect].styleUnits;
   }
