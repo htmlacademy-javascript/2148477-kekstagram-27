@@ -77,7 +77,7 @@ const EFFECTS_LIBRARY = {
       step: 0.1,
       start: 3,
     },
-    StyleName: 'brightness',
+    styleName: 'brightness',
     styleUnits: '',
   },
 };
