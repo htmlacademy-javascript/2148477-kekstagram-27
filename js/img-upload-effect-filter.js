@@ -88,7 +88,7 @@ function toggleEffect(evt) {
     previewImage.classList.add(`effects__preview__${evt.target.dataset.effect}`);
     currentEffectClass = `effects__preview__${evt.target.dataset.effect}`;
     currentEffect = evt.target.dataset.effect;
-    currentStyleName = EFFECTS_LIBRARY[currentEffect].StyleName;
+    currentStyleName = EFFECTS_LIBRARY[currentEffect].styleName;
     currentStyleUnits = EFFECTS_LIBRARY[currentEffect].styleUnits;
   }
 
