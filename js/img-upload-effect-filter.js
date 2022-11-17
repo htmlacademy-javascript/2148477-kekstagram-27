@@ -29,7 +29,7 @@ const EFFECTS_LIBRARY = {
       step: 0.1,
       start: 1,
     },
-    StyleName: 'grayscale',
+    styleName: 'grayscale',
     styleUnits: '',
   },
   sepia: {
@@ -41,7 +41,7 @@ const EFFECTS_LIBRARY = {
       step: 0.1,
       start: 1,
     },
-    StyleName: 'sepia',
+    styleName: 'sepia',
     styleUnits: '',
   },
   marvin: {
@@ -53,7 +53,7 @@ const EFFECTS_LIBRARY = {
       step: 1,
       start: 100,
     },
-    StyleName: 'invert',
+    styleName: 'invert',
     styleUnits: '%',
   },
   phobos: {
@@ -65,7 +65,7 @@ const EFFECTS_LIBRARY = {
       step: 0.1,
       start: 3,
     },
-    StyleName: 'blur',
+    styleName: 'blur',
     styleUnits: 'px',
   },
   heat: {
