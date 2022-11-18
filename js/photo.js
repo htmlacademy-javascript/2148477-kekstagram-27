@@ -3,6 +3,7 @@ import {getBigPicture} from './big-picture.js';
 import {getMiniature} from './miniatures.js';
 import {showAlert, getRandomInt} from './util.js';
 import {getUniqValue} from './cache.js';
+import {addListeners} from './img-upload.js';
 
 const CHOSEN_PHOTOS_RANDOM_LENGTH = 10;
 
@@ -36,6 +37,7 @@ function showChosenPhotos(photos) {
   // photoContainer.querySelectorAll('a.picture').forEach((elem) => elem.remove());
 
   photoContainer.innerHTML = photoContainerClear;
+  addListeners();
 
   if (currentChosenButton.id === 'filter-default') {
     photoContainer.append(getPhotosListFragment(photos));

@@ -1,2 +1,2 @@
 import './photo.js';
-import './img-upload.js';
+// import './img-upload.js';
