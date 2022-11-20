@@ -6,6 +6,7 @@ import {getUniqValue} from './cache.js';
 import {addListeners} from './img-upload.js';
 
 const CHOSEN_PHOTOS_RANDOM_LENGTH = 10;
+const DEBOUNCE_DELAY = 500;
 
 const photoContainer = document.querySelector('.pictures');
 const photoContainerClear = photoContainer.innerHTML;
@@ -80,7 +81,7 @@ getPhotosArr(
     showChosenPhotos(photosData);
     setChosenPhotos(debounce(
       () => showChosenPhotos(photosData),
-      500
+      DEBOUNCE_DELAY
     ));
   },
   () => showAlert('Не удалось загрузить фотографии'),
