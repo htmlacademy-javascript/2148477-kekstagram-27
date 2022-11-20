@@ -1,6 +1,6 @@
-const previewImage = document.querySelector('.img-upload__preview > img');
-const effectSliderWrap = document.querySelector('.effect-level__slider');
-const effectLevelInput = document.querySelector('.effect-level__value');
+// const previewImage = document.querySelector('.img-upload__preview > img');
+// const effectSliderWrap = document.querySelector('.effect-level__slider');
+// const effectLevelInput = document.querySelector('.effect-level__value');
 
 let currentEffectClass = 'effects__preview--none';
 let currentEffect;
@@ -82,28 +82,28 @@ const EFFECTS_LIBRARY = {
   },
 };
 
-function toggleEffect(evt) {
-  if (evt.target.classList.contains('effects__preview')) {
-    previewImage.classList.remove(currentEffectClass);
-    previewImage.classList.add(`effects__preview__${evt.target.dataset.effect}`);
-    currentEffectClass = `effects__preview__${evt.target.dataset.effect}`;
-    currentEffect = evt.target.dataset.effect;
+function toggleEffect(chosenRadio, image, slider, input) {
+  if (chosenRadio.classList.contains('effects__preview')) {
+    image.classList.remove(currentEffectClass);
+    image.classList.add(`effects__preview__${chosenRadio.dataset.effect}`);
+    currentEffectClass = `effects__preview__${chosenRadio.dataset.effect}`;
+    currentEffect = chosenRadio.dataset.effect;
     currentStyleName = EFFECTS_LIBRARY[currentEffect].styleName;
     currentStyleUnits = EFFECTS_LIBRARY[currentEffect].styleUnits;
   }
 
-  if (effectSliderWrap.noUiSlider) {
+  if (slider.noUiSlider) {
 
     if (currentEffect === 'none') {
-      effectSliderWrap.noUiSlider.destroy();
-      effectLevelInput.value = '';
-      previewImage.style.filter = '';
+      slider.noUiSlider.destroy();
+      input.value = '';
+      image.style.filter = '';
     } else {
-      effectSliderWrap.noUiSlider.updateOptions(EFFECTS_LIBRARY[currentEffect].sliderOptions);
+      slider.noUiSlider.updateOptions(EFFECTS_LIBRARY[currentEffect].sliderOptions);
     }
 
-  } else if (evt.target.classList.contains('effects__preview')) {
-    noUiSlider.create(effectSliderWrap, {
+  } else if (chosenRadio.classList.contains('effects__preview')) {
+    noUiSlider.create(slider, {
       range: {
         min: 1,
         max: 100,
@@ -124,9 +124,9 @@ function toggleEffect(evt) {
       },
     });
 
-    effectSliderWrap.noUiSlider.on('update', () => {
-      effectLevelInput.value = effectSliderWrap.noUiSlider.get();
-      previewImage.style.filter = `${currentStyleName}(${effectLevelInput.value}${currentStyleUnits})`;
+    slider.noUiSlider.on('update', () => {
+      input.value = slider.noUiSlider.get();
+      image.style.filter = `${currentStyleName}(${input.value}${currentStyleUnits})`;
     });
   }
 }

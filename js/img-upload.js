@@ -15,6 +15,7 @@ let imgScaleBiggerButton;
 let effectSliderWrap;
 let effectsRadio;
 let imgScaleInput;
+let effectLevelInput;
 
 function renewElements() {
   imgUploadForm = document.querySelector('.img-upload__form');
@@ -27,6 +28,7 @@ function renewElements() {
   imgScaleSmallerButton = document.querySelector('.scale__control--smaller');
   imgScaleBiggerButton = document.querySelector('.scale__control--bigger');
   effectSliderWrap = document.querySelector('.effect-level__slider');
+  effectLevelInput = document.querySelector('.effect-level__value');
   effectsRadio = document.querySelector('.effects__list');
   imgScaleInput = document.querySelector('.scale__control--value');
 }
@@ -73,7 +75,7 @@ function onImgUploadInputChange () {
     effectSliderWrap.noUiSlider.destroy();
   }
 
-  effectsRadio.addEventListener('click', toggleEffect);
+  effectsRadio.addEventListener('click', (evt) => toggleEffect(evt.target, previewImage, effectSliderWrap, effectLevelInput));
 }
 
 function onFormFieldsInput() {
