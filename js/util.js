@@ -36,4 +36,24 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-export {getRandomInt, isStringFits, showAlert};
+function debounce (callback, timeoutDelay) {
+  let timeoutId;
+  let isTimeout = false;
+  return () => {
+    if (isTimeout) {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(
+        () => {
+          callback();
+          isTimeout = false;
+        },
+        timeoutDelay
+      );
+    } else {
+      timeoutId = setTimeout(callback, 0);
+      isTimeout = true;
+    }
+  };
+}
+
+export {getRandomInt, isStringFits, showAlert, debounce};
