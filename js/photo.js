@@ -57,18 +57,31 @@ function showChosenPhotos(photos) {
 
 function setChosenPhotos(cb) {
   chosenPhotosInterface.addEventListener('click', (evt) => {
-    currentChosenButton.classList.remove('img-filters__button--active');
-    currentChosenButton = evt.target;
-    currentChosenButton.classList.add('img-filters__button--active');
-    cb();
+    if (evt.target.classList.contains('img-filters__button')) {
+      currentChosenButton.classList.remove('img-filters__button--active');
+      currentChosenButton = evt.target;
+      currentChosenButton.classList.add('img-filters__button--active');
+      cb();
+    }
   });
+}
+
+function debounce (callback, timeoutDelay) {
+  let timeoutId;
+  return () => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(callback, timeoutDelay);
+  };
 }
 
 getPhotosArr(
   (photosData) => {
     chosenPhotosInterface.classList.remove('img-filters--inactive');
     showChosenPhotos(photosData);
-    setChosenPhotos(() => showChosenPhotos(photosData));
+    setChosenPhotos(debounce(
+      () => showChosenPhotos(photosData),
+      500
+    ));
   },
   () => showAlert('Не удалось загрузить фотографии'),
 );
