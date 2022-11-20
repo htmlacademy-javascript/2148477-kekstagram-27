@@ -17,6 +17,12 @@ let effectsRadio;
 let imgScaleInput;
 let effectLevelInput;
 
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+const SCALE_MIN = 25;
+const SCALE_MAX = 100;
+const SCALE_STEP = 25;
+const SCALE_DEFAULT = 100;
+
 function renewElements() {
   imgUploadForm = document.querySelector('.img-upload__form');
   imgUploadOverlay = document.querySelector('.img-upload__overlay');
@@ -32,24 +38,6 @@ function renewElements() {
   effectsRadio = document.querySelector('.effects__list');
   imgScaleInput = document.querySelector('.scale__control--value');
 }
-
-// const imgUploadForm = document.querySelector('.img-upload__form');
-// const imgUploadOverlay = document.querySelector('.img-upload__overlay');
-// const imgUploadInput = document.querySelector('.img-upload__input');
-// const imgHashtagsInput = document.querySelector('.text__hashtags');
-// const imgDescriptionInput = document.querySelector('.text__description');
-// const imgUploadButton = document.querySelector('.img-upload__submit');
-// const previewImage = document.querySelector('.img-upload__preview > img');
-// const imgScaleSmallerButton = document.querySelector('.scale__control--smaller');
-// const imgScaleBiggerButton = document.querySelector('.scale__control--bigger');
-// const effectSliderWrap = document.querySelector('.effect-level__slider');
-// const effectsRadio = document.querySelector('.effects__list');
-// const imgScaleInput = document.querySelector('.scale__control--value');
-
-const SCALE_MIN = 25;
-const SCALE_MAX = 100;
-const SCALE_STEP = 25;
-const SCALE_DEFAULT = 100;
 
 function addListeners() {
   renewElements();
@@ -67,6 +55,14 @@ function onImgUploadInputChange () {
   previewImage.style.transform = `scale(${SCALE_DEFAULT / 100})`;
   previewImage.style.filter = '';
   imgScaleInput.value = `${SCALE_DEFAULT}%`;
+
+  const imageFile = imgUploadInput.files[0];
+  const imageFileName = imageFile.name.toLowerCase();
+  const isAllowedType = FILE_TYPES.some( (it) => imageFileName.endsWith(it) );
+
+  if (isAllowedType) {
+    previewImage.src = URL.createObjectURL(imageFile);
+  }
 
   imgUploadForm.addEventListener('change', onFormFieldsInput);
   imgUploadForm.addEventListener('input', onFormFieldsInput);
