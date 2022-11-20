@@ -1,7 +1,7 @@
 import {getPhotosArr} from './data-download.js';
 import {getBigPicture} from './big-picture.js';
 import {getMiniature} from './miniatures.js';
-import {showAlert, getRandomInt} from './util.js';
+import {showAlert, getRandomInt, debounce} from './util.js';
 import {getUniqValue} from './cache.js';
 import {addListeners} from './img-upload.js';
 
@@ -65,14 +65,6 @@ function setChosenPhotos(cb) {
       cb();
     }
   });
-}
-
-function debounce (callback, timeoutDelay) {
-  let timeoutId;
-  return () => {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(callback, timeoutDelay);
-  };
 }
 
 getPhotosArr(
