@@ -16,8 +16,27 @@ const commentsCounterShown = bigPictureOverlay.querySelector('.comments-count-sh
 const commentTemplate = commentsList.querySelector('.social__comment');
 const commentsListFragment = document.createDocumentFragment();
 
+const onMoreCommentsClick = () => {
+  let counter = 0;
 
-function getBigPicture (data) {
+  for (const comment of commentsList.childNodes) {
+    if (counter !== 0 && counter % 5 === 0) {
+      break;
+    } else if (comment.classList.contains('hidden')) {
+      comment.classList.remove('hidden');
+      counter++;
+    }
+  }
+
+  commentsCounterShown.textContent = +commentsCounterShown.textContent + counter;
+
+  if (commentsCounterShown.textContent === commentsCounterTotal.textContent) {
+    moreCommentsButton.removeEventListener('click', onMoreCommentsClick);
+    moreCommentsButton.replaceWith(moreCommentsButtonDisabled);
+  }
+};
+
+const getBigPicture = (data) => {
   commentsList.innerHTML = '';
 
   bigPictureOverlay.querySelector('.big-picture__img > img').src = data.url;
@@ -26,7 +45,6 @@ function getBigPicture (data) {
   commentsCounterTotal.textContent = data.comments.length;
   bigPictureOverlay.querySelector('.social__caption').textContent = data.description;
 
-  // TODO Добавить обработчик на enter
   if (commentsCounterShown.textContent !== commentsCounterTotal.textContent) {
     moreCommentsButton.addEventListener('click', onMoreCommentsClick);
     moreCommentsButtonDisabled.replaceWith(moreCommentsButton);
@@ -52,26 +70,6 @@ function getBigPicture (data) {
   commentsList.append(commentsListFragment);
 
   openModal(bigPictureOverlay, newCommentInput);
-}
-
-function onMoreCommentsClick () {
-  let counter = 0;
-
-  for (const comment of commentsList.childNodes) {
-    if (counter !== 0 && counter % 5 === 0) {
-      break;
-    } else if (comment.classList.contains('hidden')) {
-      comment.classList.remove('hidden');
-      counter++;
-    }
-  }
-
-  commentsCounterShown.textContent = +commentsCounterShown.textContent + counter;
-
-  if (commentsCounterShown.textContent === commentsCounterTotal.textContent) {
-    moreCommentsButton.removeEventListener('click', onMoreCommentsClick);
-    moreCommentsButton.replaceWith(moreCommentsButtonDisabled);
-  }
-}
+};
 
 export {getBigPicture, onMoreCommentsClick};

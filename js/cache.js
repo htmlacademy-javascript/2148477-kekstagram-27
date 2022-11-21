@@ -1,4 +1,4 @@
-function getUniqValue (fn, ...args) {
+const getUniqValue = (fn, ...args) => {
   const cache = [];
 
   return function () {
@@ -11,6 +11,6 @@ function getUniqValue (fn, ...args) {
     cache.push(value);
     return value;
   };
-}
+};
 
 export {getUniqValue};

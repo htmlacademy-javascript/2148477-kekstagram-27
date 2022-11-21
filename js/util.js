@@ -1,4 +1,6 @@
-function getRandomInt(x, y) {
+const ALERT_SHOW_TIME = 5000;
+
+const getRandomInt = (x, y) => {
   if (Number.isFinite(x) && Number.isFinite(y) && x >= 0 && y >= 0) {
     const min = Math.ceil(Math.min(x, y));
     const max = Math.floor(Math.max(x, y));
@@ -7,13 +9,9 @@ function getRandomInt(x, y) {
   }
 
   return NaN;
-}
+};
 
-function isStringFits(string, maxLength) {
-  return typeof string === 'string' ? string.length <= maxLength : null;
-}
-
-const ALERT_SHOW_TIME = 5000;
+const isStringFits = (string, maxLength) => typeof string === 'string' ? string.length <= maxLength : null;
 
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
@@ -36,7 +34,7 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-function debounce (callback, timeoutDelay) {
+const debounce = (callback, timeoutDelay) => {
   let timeoutId;
   let isTimeout = false;
   return () => {
@@ -50,10 +48,11 @@ function debounce (callback, timeoutDelay) {
         timeoutDelay
       );
     } else {
-      timeoutId = setTimeout(callback, 0);
+      callback();
       isTimeout = true;
+      timeoutId = setTimeout(() => (isTimeout = false), timeoutDelay);
     }
   };
-}
+};
 
 export {getRandomInt, isStringFits, showAlert, debounce};

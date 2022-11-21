@@ -1,13 +1,10 @@
-function onFormSubmit(form, onSuccess, onFail) {
+const uploadData = (form, onSuccess, onFail) => {
   const formData = new FormData(form);
   fetch(
     'https://27.javascript.pages.academy/kekstagram',
     {
       method: 'POST',
       body: formData,
-      // headers: {
-      //   'Content-Type': 'multipart/form-data;charset=utf-8'
-      // },
     },
   )
     .then((response) => {
@@ -18,6 +15,6 @@ function onFormSubmit(form, onSuccess, onFail) {
       }
     })
     .catch(onFail);
-}
+};
 
-export {onFormSubmit};
+export {uploadData};
