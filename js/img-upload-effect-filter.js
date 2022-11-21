@@ -1,13 +1,4 @@
-// const previewImage = document.querySelector('.img-upload__preview > img');
-// const effectSliderWrap = document.querySelector('.effect-level__slider');
-// const effectLevelInput = document.querySelector('.effect-level__value');
-
-let currentEffectClass = 'effects__preview--none';
-let currentEffect;
-let currentStyleName;
-let currentStyleUnits;
-
-const EFFECTS_LIBRARY = {
+const Effect = {
   none: {
     sliderOptions: {
       range: {
@@ -82,14 +73,19 @@ const EFFECTS_LIBRARY = {
   },
 };
 
-function toggleEffect(chosenRadio, image, slider, input) {
+let currentEffectClass = 'effects__preview--none';
+let currentEffect;
+let currentStyleName;
+let currentStyleUnits;
+
+const toggleEffect = (chosenRadio, image, slider, input) => {
   if (chosenRadio.classList.contains('effects__preview')) {
     image.classList.remove(currentEffectClass);
     image.classList.add(`effects__preview__${chosenRadio.dataset.effect}`);
     currentEffectClass = `effects__preview__${chosenRadio.dataset.effect}`;
     currentEffect = chosenRadio.dataset.effect;
-    currentStyleName = EFFECTS_LIBRARY[currentEffect].styleName;
-    currentStyleUnits = EFFECTS_LIBRARY[currentEffect].styleUnits;
+    currentStyleName = Effect[currentEffect].styleName;
+    currentStyleUnits = Effect[currentEffect].styleUnits;
   }
 
   if (slider.noUiSlider) {
@@ -99,7 +95,7 @@ function toggleEffect(chosenRadio, image, slider, input) {
       input.value = '';
       image.style.filter = '';
     } else {
-      slider.noUiSlider.updateOptions(EFFECTS_LIBRARY[currentEffect].sliderOptions);
+      slider.noUiSlider.updateOptions(Effect[currentEffect].sliderOptions);
     }
 
   } else if (chosenRadio.classList.contains('effects__preview')) {
@@ -112,15 +108,13 @@ function toggleEffect(chosenRadio, image, slider, input) {
       start: 0,
       connect: 'lower',
       format: {
-        to: function (value) {
+        to: (value) => {
           if (Number.isInteger(value)) {
             return value.toFixed(0);
           }
           return value.toFixed(1);
         },
-        from: function (value) {
-          return value;
-        }
+        from: (value) => value
       },
     });
 
@@ -129,6 +123,6 @@ function toggleEffect(chosenRadio, image, slider, input) {
       image.style.filter = `${currentStyleName}(${input.value}${currentStyleUnits})`;
     });
   }
-}
+};
 
 export {toggleEffect};

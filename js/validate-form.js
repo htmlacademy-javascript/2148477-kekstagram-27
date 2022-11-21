@@ -1,7 +1,83 @@
 const HASHTAGS_MAX_QUANTITY = 5;
 const HASHTAG_MAX_LENGTH = 20;
 
-function isValid(form) {
+const getHashtagsArr = (hashtagsStr) => (
+  hashtagsStr.toUpperCase()
+    .split(' ')
+    .filter((hashtag) => hashtag !== '')
+);
+
+const validateHashtagUniq = (value) => (
+  getHashtagsArr(value)
+    .reduce(
+      (result, hashtag, index, array) => {
+        if (index + 1 < array.length) {
+          result = result && !array.includes(hashtag, index + 1);
+        }
+        return result;
+      },
+      true,
+    )
+);
+
+const validateHashtagMaxQuantity = (value) => getHashtagsArr(value).length <= HASHTAGS_MAX_QUANTITY;
+
+const validateHashtagMaxLength = (value) => (
+  getHashtagsArr(value).reduce(
+    (result, hashtag) => (result && hashtag.length <= HASHTAG_MAX_LENGTH),
+    true,
+  )
+);
+
+const validateHashtagLetters = (value) => (
+  getHashtagsArr(value).reduce(
+    (result, hashtag) => {
+      if (hashtag.length > 1) {
+        result = result && !(hashtag.search(/[^А-Яа-яA-Za-zЁё0-9#]+/) + 1);
+      }
+      return result;
+    },
+    true
+  )
+);
+
+const validateHashtagMinLength = (value) => (
+  getHashtagsArr(value).reduce(
+    (result, hashtag) => {
+      if (hashtag.length === 1) {
+        result = result && hashtag !== '#';
+      }
+      return result;
+    },
+    true
+  )
+);
+
+const validateHashtagFirstChar = (value) => (
+  getHashtagsArr(value).reduce(
+    (result, hashtag) => {
+      if (hashtag !== '') {
+        result = result && hashtag[0] === '#';
+      }
+      return result;
+    },
+    true
+  )
+);
+
+const validateHashtagSpaces = (value) => (
+  getHashtagsArr(value).reduce(
+    (result, hashtag) => {
+      if (hashtag.length > 1) {
+        result = result && !hashtag.includes('#', 1);
+      }
+      return result;
+    },
+    true
+  )
+);
+
+const isValid = (form) => {
   const pristine = new Pristine(form, {
     // class of the parent element where the error/success class is added
     classTo: 'img-upload__field-wrapper',
@@ -56,78 +132,6 @@ function isValid(form) {
   );
 
   return pristine.validate();
-}
-
-function validateHashtagUniq (value) {
-  return getHashtagsArr(value).reduce(
-    (result, hashtag, index, array) => {
-      if (index + 1 < array.length) {
-        result = result && !array.includes(hashtag, index + 1);
-      }
-      return result;
-    },
-    true
-  );
-}
-
-function validateHashtagMaxQuantity (value) {
-  return getHashtagsArr(value).length <= HASHTAGS_MAX_QUANTITY;
-}
-
-function validateHashtagMaxLength (value) {
-  return getHashtagsArr(value).reduce((result, hashtag) => result && hashtag.length <= HASHTAG_MAX_LENGTH, true);
-}
-
-function validateHashtagLetters (value) {
-  return getHashtagsArr(value).reduce(
-    (result, hashtag) => {
-      if (hashtag.length > 1) {
-        result = result && !(hashtag.search(/[^А-Яа-яA-Za-zЁё0-9#]+/) + 1);
-      }
-      return result;
-    },
-    true
-  );
-}
-
-function validateHashtagMinLength(value) {
-  return getHashtagsArr(value).reduce(
-    (result, hashtag) => {
-      if (hashtag.length === 1) {
-        result = result && hashtag !== '#';
-      }
-      return result;
-    },
-    true
-  );
-}
-
-function validateHashtagFirstChar (value) {
-  return getHashtagsArr(value).reduce(
-    (result, hashtag) => {
-      if (hashtag !== '') {
-        result = result && hashtag[0] === '#';
-      }
-      return result;
-    },
-    true
-  );
-}
-
-function validateHashtagSpaces (value) {
-  return getHashtagsArr(value).reduce(
-    (result, hashtag) => {
-      if (hashtag.length > 1) {
-        result = result && !hashtag.includes('#', 1);
-      }
-      return result;
-    },
-    true
-  );
-}
-
-function getHashtagsArr(hashtagsStr) {
-  return hashtagsStr.toUpperCase().split(' ');
-}
+};
 
 export {isValid};

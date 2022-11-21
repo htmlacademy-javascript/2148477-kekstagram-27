@@ -1,12 +1,12 @@
+const CHOSEN_PHOTOS_RANDOM_LENGTH = 10;
+const DEBOUNCE_DELAY = 500;
+
 import {getPhotosArr} from './data-download.js';
 import {getBigPicture} from './big-picture.js';
 import {getMiniature} from './miniatures.js';
 import {showAlert, getRandomInt, debounce} from './util.js';
 import {getUniqValue} from './cache.js';
 import {addListeners} from './img-upload.js';
-
-const CHOSEN_PHOTOS_RANDOM_LENGTH = 10;
-const DEBOUNCE_DELAY = 500;
 
 const photoContainer = document.querySelector('.pictures');
 const photoContainerClear = photoContainer.innerHTML;
@@ -16,7 +16,7 @@ const miniatureTemplate = document.querySelector('#picture')
 const chosenPhotosInterface = document.querySelector('.img-filters');
 let currentChosenButton = document.querySelector('.img-filters__button--active');
 
-function getPhotosListFragment (photosArr) {
+const getPhotosListFragment = (photosArr) => {
   const photosListFragment = document.createDocumentFragment();
 
   photosArr.forEach((photoData) => {
@@ -31,9 +31,9 @@ function getPhotosListFragment (photosArr) {
   });
 
   return photosListFragment;
-}
+};
 
-function showChosenPhotos(photos) {
+const showChosenPhotos = (photos) => {
   let chosenPhotos = [];
   // photoContainer.querySelectorAll('a.picture').forEach((elem) => elem.remove());
 
@@ -54,9 +54,9 @@ function showChosenPhotos(photos) {
       .sort((a, b) => b.comments.length - a.comments.length);
     photoContainer.append(getPhotosListFragment(chosenPhotos));
   }
-}
+};
 
-function setChosenPhotos(cb) {
+const setChosenPhotos = (cb) => {
   chosenPhotosInterface.addEventListener('click', (evt) => {
     if (evt.target.classList.contains('img-filters__button')) {
       currentChosenButton.classList.remove('img-filters__button--active');
@@ -65,7 +65,7 @@ function setChosenPhotos(cb) {
       cb();
     }
   });
-}
+};
 
 getPhotosArr(
   (photosData) => {

@@ -1,4 +1,4 @@
-function getPhotosArr(onSuccess, onFail) {
+const getPhotosArr = (onSuccess, onFail) => {
   fetch('https://27.javascript.pages.academy/kekstagram/data')
     .then((response) => {
       if (response.ok) {
@@ -9,6 +9,6 @@ function getPhotosArr(onSuccess, onFail) {
     })
     .then((photoData) => onSuccess(photoData))
     .catch(onFail);
-}
+};
 
 export {getPhotosArr};

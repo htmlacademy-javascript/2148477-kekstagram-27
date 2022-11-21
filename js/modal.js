@@ -6,8 +6,7 @@ import {showSuccess, showError} from './success-fail-popup.js';
 const sucessPopup = document.querySelector('.success');
 const failPopup = document.querySelector('.error');
 
-function closeModal(evt) {
-  // TODO разделить обработчик на два klick & keydown
+const closeModal = function (evt) {
   if (sucessPopup.classList.contains('hidden') && failPopup.classList.contains('hidden') && !evt.target.classList.contains('no-esc') && evt.code === 'Escape' || evt.type === 'click' || evt.type === 'submit') {
     this.window.classList.add('hidden');
     document.body.classList.remove('modal-open');
@@ -19,34 +18,30 @@ function closeModal(evt) {
       this.window.querySelector('.social__comments-loader').removeEventListener('click', onMoreCommentsClick);
     }
 
-    for (const input of this.toReset) {
+    for (const input of this.reset) {
       input.value = '';
     }
   }
-}
+};
 
-function getCloseButton (modal) {
-  return (modal.querySelector('.cancel') || modal.querySelector('.success__button') || modal.querySelector('.error__button'));
-}
+const getCloseButton = (modal) => ( modal.querySelector('.cancel') || modal.querySelector('.success__button') || modal.querySelector('.error__button') );
 
-function getSubmitButton (modal) {
-  return (modal.querySelector('.img-upload__submit'));
-}
+const getSubmitButton = (modal) => modal.querySelector('.img-upload__submit');
 
-function openModal(modal, ...inputsToReset) {
+const openModal = (modal, ...inputsToReset) => {
   const closeButton = getCloseButton(modal);
   const submitButton = getSubmitButton(modal);
-  const objListenerCallback = {
+  const onCloseModal = {
     handleEvent: closeModal,
     window: modal,
     form: modal.parentNode,
     button: closeButton,
     submit: submitButton,
-    toReset: inputsToReset,
+    reset: inputsToReset,
   };
 
-  closeButton.addEventListener('click', objListenerCallback);
-  document.addEventListener('keydown', objListenerCallback);
+  closeButton.addEventListener('click', onCloseModal);
+  document.addEventListener('keydown', onCloseModal);
 
   if (submitButton) {
     const blockSubmitButton = () => {
@@ -65,7 +60,7 @@ function openModal(modal, ...inputsToReset) {
       onFormSubmit(
         evt.target,
         () => {
-          closeModal.bind(objListenerCallback)(evt);
+          closeModal.bind(onCloseModal)(evt);
           showSuccess();
           unblockSubmitButton();
         },
@@ -79,6 +74,6 @@ function openModal(modal, ...inputsToReset) {
 
   modal.classList.remove('hidden');
   document.body.classList.add('modal-open');
-}
+};
 
 export {openModal};

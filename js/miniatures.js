@@ -1,4 +1,4 @@
-function getMiniature (data, template) {
+const getMiniature = (data, template) => {
   const photo = template.cloneNode(true);
 
   photo.querySelector('.picture__img').src = data.url;
@@ -6,6 +6,6 @@ function getMiniature (data, template) {
   photo.querySelector('.picture__likes').textContent = data.likes;
 
   return photo;
-}
+};
 
 export {getMiniature};

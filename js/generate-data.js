@@ -1,6 +1,3 @@
-import {getRandomInt, isStringFits} from './util.js';
-import {getUniqValue} from './cache.js';
-
 const POSTED_PHOTOS_COUNT = 25;
 const COMMENT_PER_PHOTO_MIN = 2;
 const COMMENT_PER_PHOTO_MAX = 6;
@@ -41,29 +38,30 @@ const COMMENTS = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
-function getPhotosArr() {
+import {getRandomInt, isStringFits} from './util.js';
+import {getUniqValue} from './cache.js';
+
+const getPhotosArr = () => {
   const getUniqRandomId = getUniqValue(getRandomInt, 1, POSTED_PHOTOS_COUNT);
   const getUniqRandomPhoto = getUniqValue(getRandomInt, 1, POSTED_PHOTOS_COUNT);
   const getUniqRandomCommentId = getUniqValue(getRandomInt, 1, POSTED_PHOTOS_COUNT * COMMENT_PER_PHOTO_MAX);
 
-  function getPhoto() {
-    function getDescription (text, maxLength) {
+  const getPhoto = () => {
+    const getDescription = (text, maxLength) => {
       const string = `${text.split('. ')[ getRandomInt(0, text.split('. ').length - 1) ]}.`;
       return isStringFits(string, maxLength) ? string : `${string.slice(0, maxLength - 2)}.`;
-    }
+    };
 
     const getUniqRandomAvatar = getUniqValue(getRandomInt, 1, COMMENT_PER_PHOTO_MAX);
     const getUniqRandomMessage = getUniqValue(getRandomInt, 0, COMMENT_PER_PHOTO_MAX - 1);
     const getUniqRandomCommentorName = getUniqValue(getRandomInt, 0, COMMENTORS_NAMES.length - 1);
 
-    function getComment() {
-      return {
-        id: getUniqRandomCommentId(),
-        avatar: `img/avatar-${ getUniqRandomAvatar() }.svg`,
-        message: COMMENTS[ getUniqRandomMessage() ],
-        name: COMMENTORS_NAMES[ getUniqRandomCommentorName() ],
-      };
-    }
+    const getComment = () => ({
+      id: getUniqRandomCommentId(),
+      avatar: `img/avatar-${ getUniqRandomAvatar() }.svg`,
+      message: COMMENTS[ getUniqRandomMessage() ],
+      name: COMMENTORS_NAMES[ getUniqRandomCommentorName() ],
+    });
 
     return {
       id: getUniqRandomId(),
@@ -72,9 +70,9 @@ function getPhotosArr() {
       likes: getRandomInt(15, 200),
       comments: Array.from({length: getRandomInt(COMMENT_PER_PHOTO_MAX, COMMENT_PER_PHOTO_MIN)}, getComment),
     };
-  }
+  };
 
   return Array.from({length: POSTED_PHOTOS_COUNT}, getPhoto);
-}
+};
 
 export {getPhotosArr};
