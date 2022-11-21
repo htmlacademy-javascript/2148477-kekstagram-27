@@ -22,6 +22,7 @@ let effectSliderWrap;
 let effectsRadio;
 let imgScaleInput;
 let effectLevelInput;
+let effectsRadioNone;
 
 const renewElements = () => {
   imgUploadForm = document.querySelector('.img-upload__form');
@@ -36,6 +37,7 @@ const renewElements = () => {
   effectSliderWrap = document.querySelector('.effect-level__slider');
   effectLevelInput = document.querySelector('.effect-level__value');
   effectsRadio = document.querySelector('.effects__list');
+  effectsRadioNone = document.querySelector('#effect-none');
   imgScaleInput = document.querySelector('.scale__control--value');
 };
 
@@ -48,12 +50,13 @@ const onFormFieldsInput = () => {
 };
 
 const onImgUploadInputChange = () => {
-  openModal(imgUploadOverlay, imgUploadInput, imgHashtagsInput, imgDescriptionInput);
+  openModal(imgUploadOverlay, imgUploadInput, imgHashtagsInput, imgDescriptionInput, effectLevelInput);
   previewImage.classList = '';
   previewImage.classList.add('effects__preview--none');
   previewImage.style.transform = `scale(${SCALE_DEFAULT / 100})`;
   previewImage.style.filter = '';
   imgScaleInput.value = `${SCALE_DEFAULT}%`;
+  effectsRadioNone.checked = true;
 
   const imageFile = imgUploadInput.files[0];
   const imageFileName = imageFile.name.toLowerCase();

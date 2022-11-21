@@ -1,4 +1,4 @@
-const onFormSubmit = (form, onSuccess, onFail) => {
+const uploadData = (form, onSuccess, onFail) => {
   const formData = new FormData(form);
   fetch(
     'https://27.javascript.pages.academy/kekstagram',
@@ -17,4 +17,4 @@ const onFormSubmit = (form, onSuccess, onFail) => {
     .catch(onFail);
 };
 
-export {onFormSubmit};
+export {uploadData};

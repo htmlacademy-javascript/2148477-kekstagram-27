@@ -1,6 +1,6 @@
 import {onFormFieldsInput} from './img-upload.js';
 import {onMoreCommentsClick} from './big-picture.js';
-import {onFormSubmit} from './data-upload.js';
+import {uploadData} from './data-upload.js';
 import {showSuccess, showError} from './success-fail-popup.js';
 
 const sucessPopup = document.querySelector('.success');
@@ -54,10 +54,11 @@ const openModal = (modal, ...inputsToReset) => {
       submitButton.textContent = 'Опубликовать';
     };
 
-    modal.parentNode.addEventListener('submit', (evt) => {
+    const onFormSubmit = (evt) => {
       evt.preventDefault();
       blockSubmitButton();
-      onFormSubmit(
+      evt.target.removeEventListener('submit', onFormSubmit);
+      uploadData(
         evt.target,
         () => {
           closeModal.bind(onCloseModal)(evt);
@@ -69,7 +70,9 @@ const openModal = (modal, ...inputsToReset) => {
           unblockSubmitButton();
         }
       );
-    });
+    };
+
+    modal.parentNode.addEventListener('submit', onFormSubmit);
   }
 
   modal.classList.remove('hidden');
