@@ -50,6 +50,14 @@ const onFormFieldsInput = () => {
   }
 };
 
+const onFormFieldsChange = () => {
+  if ( isValid(imgUploadForm) ) {
+    imgUploadButton.removeAttribute('disabled');
+  } else {
+    imgUploadButton.setAttribute('disabled', true);
+  }
+};
+
 const onImgUploadInputChange = () => {
   openModal(imgUploadOverlay, imgUploadInput, imgHashtagsInput, imgDescriptionInput, effectLevelInput);
   previewImage.classList = '';
@@ -67,7 +75,7 @@ const onImgUploadInputChange = () => {
     previewImage.src = URL.createObjectURL(imageFile);
   }
 
-  imgUploadForm.addEventListener('change', onFormFieldsInput);
+  imgUploadForm.addEventListener('change', onFormFieldsChange);
   imgUploadForm.addEventListener('input', onFormFieldsInput);
 
   if (effectSliderWrap.noUiSlider) {
