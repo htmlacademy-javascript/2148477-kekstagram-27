@@ -35,7 +35,6 @@ const getPhotosListFragment = (photosArr) => {
 
 const renderChosenPhotos = (photos) => {
   let chosenPhotos = [];
-  // photoContainer.querySelectorAll('a.picture').forEach((elem) => elem.remove());
 
   photoContainer.innerHTML = photoContainerClear;
   addListeners();
