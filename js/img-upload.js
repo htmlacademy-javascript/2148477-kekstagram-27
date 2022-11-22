@@ -1,4 +1,3 @@
-const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const SCALE_MIN = 25;
 const SCALE_MAX = 100;
 const SCALE_STEP = 25;
@@ -8,6 +7,8 @@ import {onUpscaleClick, onDownscaleClick} from './img-upload-effect-scale.js';
 import {toggleEffect} from './img-upload-effect-filter.js';
 import {openModal} from './modal.js';
 import {isValid} from './validate-form.js';
+
+const fileTypes = ['jpg', 'jpeg', 'png'];
 
 let imgUploadForm;
 let imgUploadOverlay;
@@ -60,7 +61,7 @@ const onImgUploadInputChange = () => {
 
   const imageFile = imgUploadInput.files[0];
   const imageFileName = imageFile.name.toLowerCase();
-  const isAllowedType = FILE_TYPES.some( (it) => imageFileName.endsWith(it) );
+  const isAllowedType = fileTypes.some( (it) => imageFileName.endsWith(it) );
 
   if (isAllowedType) {
     previewImage.src = URL.createObjectURL(imageFile);
