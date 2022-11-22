@@ -116,13 +116,13 @@ const isValid = (form) => {
   pristine.addValidator(
     form.querySelector('.text__hashtags'),
     validateHashtagMaxLength,
-    'Не больее 20 символов.'
+    `Не больее${HASHTAG_MAX_LENGTH} символов.`
   );
 
   pristine.addValidator(
     form.querySelector('.text__hashtags'),
     validateHashtagMaxQuantity,
-    'Не более 5 хештегов.'
+    `Не более ${HASHTAGS_MAX_QUANTITY} хештегов.'`
   );
 
   pristine.addValidator(
