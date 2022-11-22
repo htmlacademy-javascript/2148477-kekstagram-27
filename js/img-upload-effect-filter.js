@@ -1,4 +1,4 @@
-const Effect = {
+const effect = {
   none: {
     sliderOptions: {
       range: {
@@ -84,8 +84,8 @@ const toggleEffect = (chosenRadio, image, slider, input) => {
     image.classList.add(`effects__preview__${chosenRadio.dataset.effect}`);
     currentEffectClass = `effects__preview__${chosenRadio.dataset.effect}`;
     currentEffect = chosenRadio.dataset.effect;
-    currentStyleName = Effect[currentEffect].styleName;
-    currentStyleUnits = Effect[currentEffect].styleUnits;
+    currentStyleName = effect[currentEffect].styleName;
+    currentStyleUnits = effect[currentEffect].styleUnits;
   }
 
   if (slider.noUiSlider) {
@@ -95,7 +95,7 @@ const toggleEffect = (chosenRadio, image, slider, input) => {
       input.value = '';
       image.style.filter = '';
     } else {
-      slider.noUiSlider.updateOptions(Effect[currentEffect].sliderOptions);
+      slider.noUiSlider.updateOptions(effect[currentEffect].sliderOptions);
     }
 
   } else if (chosenRadio.classList.contains('effects__preview')) {
