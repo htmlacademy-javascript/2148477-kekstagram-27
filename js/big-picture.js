@@ -1,3 +1,5 @@
+const COMMENTS_TO_SHOW_COUNT = 5;
+
 import {openModal} from './modal.js';
 
 const bigPictureOverlay = document.querySelector('.big-picture');
@@ -20,7 +22,7 @@ const onMoreCommentsClick = () => {
   let counter = 0;
 
   for (const comment of commentsList.childNodes) {
-    if (counter !== 0 && counter % 5 === 0) {
+    if (counter !== 0 && counter % COMMENTS_TO_SHOW_COUNT === 0) {
       break;
     } else if (comment.classList.contains('hidden')) {
       comment.classList.remove('hidden');
@@ -41,7 +43,7 @@ const showBigPicture = (data) => {
 
   bigPictureOverlay.querySelector('.big-picture__img > img').src = data.url;
   bigPictureOverlay.querySelector('.likes-count').textContent = data.likes;
-  commentsCounterShown.textContent = data.comments.length < 5 ? data.comments.length : 5;
+  commentsCounterShown.textContent = data.comments.length < COMMENTS_TO_SHOW_COUNT ? data.comments.length : COMMENTS_TO_SHOW_COUNT;
   commentsCounterTotal.textContent = data.comments.length;
   bigPictureOverlay.querySelector('.social__caption').textContent = data.description;
 
@@ -62,7 +64,7 @@ const showBigPicture = (data) => {
 
     commentsListFragment.append(newComment);
 
-    if (commentsListFragment.childNodes.length > 5) {
+    if (commentsListFragment.childNodes.length > COMMENTS_TO_SHOW_COUNT) {
       commentsListFragment.lastChild.classList.add('hidden');
     }
   });
