@@ -2,7 +2,7 @@ const CHOSEN_PHOTOS_RANDOM_LENGTH = 10;
 const DEBOUNCE_DELAY = 500;
 
 import {getPhotosArr} from './data-download.js';
-import {getBigPicture} from './big-picture.js';
+import {showBigPicture} from './big-picture.js';
 import {getMiniature} from './miniatures.js';
 import {showAlert, getRandomInt, debounce} from './util.js';
 import {getUniqValue} from './cache.js';
@@ -24,7 +24,7 @@ const getPhotosListFragment = (photosArr) => {
 
     newPhoto.addEventListener('click', (evt) => {
       evt.preventDefault();
-      getBigPicture(photoData);
+      showBigPicture(photoData);
     });
 
     photosListFragment.append(newPhoto);
@@ -33,7 +33,7 @@ const getPhotosListFragment = (photosArr) => {
   return photosListFragment;
 };
 
-const showChosenPhotos = (photos) => {
+const renderChosenPhotos = (photos) => {
   let chosenPhotos = [];
   // photoContainer.querySelectorAll('a.picture').forEach((elem) => elem.remove());
 
@@ -56,7 +56,7 @@ const showChosenPhotos = (photos) => {
   }
 };
 
-const setChosenPhotos = (cb) => {
+const initChosenPhotos = (cb) => {
   chosenPhotosInterface.addEventListener('click', (evt) => {
     if (evt.target.classList.contains('img-filters__button')) {
       currentChosenButton.classList.remove('img-filters__button--active');
@@ -70,9 +70,9 @@ const setChosenPhotos = (cb) => {
 getPhotosArr(
   (photosData) => {
     chosenPhotosInterface.classList.remove('img-filters--inactive');
-    showChosenPhotos(photosData);
-    setChosenPhotos(debounce(
-      () => showChosenPhotos(photosData),
+    renderChosenPhotos(photosData);
+    initChosenPhotos(debounce(
+      () => renderChosenPhotos(photosData),
       DEBOUNCE_DELAY
     ));
   },

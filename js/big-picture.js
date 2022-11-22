@@ -36,7 +36,7 @@ const onMoreCommentsClick = () => {
   }
 };
 
-const getBigPicture = (data) => {
+const showBigPicture = (data) => {
   commentsList.innerHTML = '';
 
   bigPictureOverlay.querySelector('.big-picture__img > img').src = data.url;
@@ -72,4 +72,4 @@ const getBigPicture = (data) => {
   openModal(bigPictureOverlay, newCommentInput);
 };
 
-export {getBigPicture, onMoreCommentsClick};
+export {showBigPicture, onMoreCommentsClick};
