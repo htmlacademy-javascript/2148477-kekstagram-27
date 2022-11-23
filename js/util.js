@@ -11,8 +11,6 @@ const getRandomInt = (x, y) => {
   return NaN;
 };
 
-const isStringFits = (string, maxLength) => typeof string === 'string' ? string.length <= maxLength : null;
-
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = '100';
@@ -55,4 +53,4 @@ const debounce = (callback, timeoutDelay) => {
   };
 };
 
-export {getRandomInt, isStringFits, showAlert, debounce};
+export {getRandomInt, showAlert, debounce};

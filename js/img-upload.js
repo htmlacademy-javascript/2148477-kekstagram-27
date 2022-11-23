@@ -1,13 +1,14 @@
-const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const SCALE_MIN = 25;
 const SCALE_MAX = 100;
 const SCALE_STEP = 25;
 const SCALE_DEFAULT = 100;
 
-import {onUpscaleClick, onDownscaleClick} from './img-upload-effect-scale.js';
+import {upScale, downScale} from './img-upload-effect-scale.js';
 import {toggleEffect} from './img-upload-effect-filter.js';
 import {openModal} from './modal.js';
 import {isValid} from './validate-form.js';
+
+const fileTypes = ['jpg', 'jpeg', 'png'];
 
 let imgUploadForm;
 let imgUploadOverlay;
@@ -49,6 +50,14 @@ const onFormFieldsInput = () => {
   }
 };
 
+const onFormFieldsChange = () => {
+  if ( isValid(imgUploadForm) ) {
+    imgUploadButton.removeAttribute('disabled');
+  } else {
+    imgUploadButton.setAttribute('disabled', true);
+  }
+};
+
 const onImgUploadInputChange = () => {
   openModal(imgUploadOverlay, imgUploadInput, imgHashtagsInput, imgDescriptionInput, effectLevelInput);
   previewImage.classList = '';
@@ -60,13 +69,13 @@ const onImgUploadInputChange = () => {
 
   const imageFile = imgUploadInput.files[0];
   const imageFileName = imageFile.name.toLowerCase();
-  const isAllowedType = FILE_TYPES.some( (it) => imageFileName.endsWith(it) );
+  const isAllowedType = fileTypes.some( (it) => imageFileName.endsWith(it) );
 
   if (isAllowedType) {
     previewImage.src = URL.createObjectURL(imageFile);
   }
 
-  imgUploadForm.addEventListener('change', onFormFieldsInput);
+  imgUploadForm.addEventListener('change', onFormFieldsChange);
   imgUploadForm.addEventListener('input', onFormFieldsInput);
 
   if (effectSliderWrap.noUiSlider) {
@@ -79,8 +88,8 @@ const onImgUploadInputChange = () => {
 const addListeners = () => {
   renewElements();
 
-  imgScaleSmallerButton.addEventListener('click', () => {onDownscaleClick(SCALE_MIN, SCALE_STEP, previewImage, imgScaleInput);});
-  imgScaleBiggerButton.addEventListener('click', () => {onUpscaleClick(SCALE_MAX, SCALE_STEP, previewImage, imgScaleInput);});
+  imgScaleSmallerButton.addEventListener('click', () => {downScale(SCALE_MIN, SCALE_STEP, previewImage, imgScaleInput);});
+  imgScaleBiggerButton.addEventListener('click', () => {upScale(SCALE_MAX, SCALE_STEP, previewImage, imgScaleInput);});
 
   imgUploadInput.addEventListener('change', onImgUploadInputChange);
 };

@@ -1,3 +1,5 @@
+const COMMENTS_TO_SHOW_COUNT = 5;
+
 import {openModal} from './modal.js';
 
 const bigPictureOverlay = document.querySelector('.big-picture');
@@ -17,18 +19,19 @@ const commentTemplate = commentsList.querySelector('.social__comment');
 const commentsListFragment = document.createDocumentFragment();
 
 const onMoreCommentsClick = () => {
-  let counter = 0;
+  const comments = Array.from(commentsList.childNodes);
 
-  for (const comment of commentsList.childNodes) {
-    if (counter !== 0 && counter % 5 === 0) {
-      break;
-    } else if (comment.classList.contains('hidden')) {
-      comment.classList.remove('hidden');
-      counter++;
+  comments.some((element, index, array) => {
+    if (index > commentsCounterShown.textContent && index % COMMENTS_TO_SHOW_COUNT === 0) {
+      commentsCounterShown.textContent = index;
+      return true;
+    } else if (element.classList.contains('hidden')) {
+      element.classList.remove('hidden');
     }
-  }
-
-  commentsCounterShown.textContent = +commentsCounterShown.textContent + counter;
+    if (index === array.length - 1) {
+      commentsCounterShown.textContent = array.length;
+    }
+  });
 
   if (commentsCounterShown.textContent === commentsCounterTotal.textContent) {
     moreCommentsButton.removeEventListener('click', onMoreCommentsClick);
@@ -36,12 +39,12 @@ const onMoreCommentsClick = () => {
   }
 };
 
-const getBigPicture = (data) => {
+const showBigPicture = (data) => {
   commentsList.innerHTML = '';
 
   bigPictureOverlay.querySelector('.big-picture__img > img').src = data.url;
   bigPictureOverlay.querySelector('.likes-count').textContent = data.likes;
-  commentsCounterShown.textContent = data.comments.length < 5 ? data.comments.length : 5;
+  commentsCounterShown.textContent = data.comments.length < COMMENTS_TO_SHOW_COUNT ? data.comments.length : COMMENTS_TO_SHOW_COUNT;
   commentsCounterTotal.textContent = data.comments.length;
   bigPictureOverlay.querySelector('.social__caption').textContent = data.description;
 
@@ -62,7 +65,7 @@ const getBigPicture = (data) => {
 
     commentsListFragment.append(newComment);
 
-    if (commentsListFragment.childNodes.length > 5) {
+    if (commentsListFragment.childNodes.length > COMMENTS_TO_SHOW_COUNT) {
       commentsListFragment.lastChild.classList.add('hidden');
     }
   });
@@ -72,4 +75,4 @@ const getBigPicture = (data) => {
   openModal(bigPictureOverlay, newCommentInput);
 };
 
-export {getBigPicture, onMoreCommentsClick};
+export {showBigPicture, onMoreCommentsClick};
