@@ -19,18 +19,19 @@ const commentTemplate = commentsList.querySelector('.social__comment');
 const commentsListFragment = document.createDocumentFragment();
 
 const onMoreCommentsClick = () => {
-  let counter = 0;
+  const comments = Array.from(commentsList.childNodes);
 
-  for (const comment of commentsList.childNodes) {
-    if (counter !== 0 && counter % COMMENTS_TO_SHOW_COUNT === 0) {
-      break;
-    } else if (comment.classList.contains('hidden')) {
-      comment.classList.remove('hidden');
-      counter++;
+  comments.some((element, index, array) => {
+    if (index > commentsCounterShown.textContent && index % COMMENTS_TO_SHOW_COUNT === 0) {
+      commentsCounterShown.textContent = index;
+      return true;
+    } else if (element.classList.contains('hidden')) {
+      element.classList.remove('hidden');
     }
-  }
-
-  commentsCounterShown.textContent = +commentsCounterShown.textContent + counter;
+    if (index === array.length - 1) {
+      commentsCounterShown.textContent = array.length;
+    }
+  });
 
   if (commentsCounterShown.textContent === commentsCounterTotal.textContent) {
     moreCommentsButton.removeEventListener('click', onMoreCommentsClick);
