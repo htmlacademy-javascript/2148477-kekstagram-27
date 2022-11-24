@@ -42,20 +42,16 @@ const renewElements = () => {
   imgScaleInput = document.querySelector('.scale__control--value');
 };
 
+const toggleImgUploadButton = () => {
+  imgUploadButton.disabled = !isValid(imgUploadForm);
+};
+
 const onFormFieldsInput = () => {
-  if ( isValid(imgUploadForm) ) {
-    imgUploadButton.removeAttribute('disabled');
-  } else {
-    imgUploadButton.setAttribute('disabled', true);
-  }
+  toggleImgUploadButton();
 };
 
 const onFormFieldsChange = () => {
-  if ( isValid(imgUploadForm) ) {
-    imgUploadButton.removeAttribute('disabled');
-  } else {
-    imgUploadButton.setAttribute('disabled', true);
-  }
+  toggleImgUploadButton();
 };
 
 const onImgUploadInputChange = () => {
@@ -94,4 +90,4 @@ const addListeners = () => {
   imgUploadInput.addEventListener('change', onImgUploadInputChange);
 };
 
-export {onFormFieldsInput, addListeners};
+export {onFormFieldsInput, onFormFieldsChange, addListeners};
