@@ -1,4 +1,4 @@
-import {onFormFieldsInput} from './img-upload.js';
+import {onFormFieldsInput, onFormFieldsChange} from './img-upload.js';
 import {onMoreCommentsClick} from './big-picture.js';
 import {uploadData} from './data-upload.js';
 import {showSuccess, showError} from './success-fail-popup.js';
@@ -14,6 +14,7 @@ const closeModal = function (evt) {
     this.button.removeEventListener('click', this);
     document.removeEventListener('keydown', this);
     this.form.removeEventListener('input', onFormFieldsInput);
+    this.form.removeEventListener('change', onFormFieldsChange);
     if (this.window.querySelector('.social__comments-loader')) {
       this.window.querySelector('.social__comments-loader').removeEventListener('click', onMoreCommentsClick);
     }
